@@ -10,4 +10,8 @@ exif = {
     if k in PIL.ExifTags.TAGS
 }
 
-print(exif)
+gpsinfo = {}
+for key in exif['GPSInfo'].keys():
+    decode = PIL.ExifTags.GPSTAGS.get(key,key)
+    gpsinfo[decode] = exif['GPSInfo'][key]
+print (gpsinfo)
