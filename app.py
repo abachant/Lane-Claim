@@ -1,5 +1,19 @@
 import PIL.Image
 import PIL.ExifTags
+import pyrebase
+
+
+config = {
+    "apiKey": "AIzaSyCs5jBiHX_nzPmzmOPlsA2lf9o6EdS9goo",
+    "authDomain": "lane-claim.firebaseapp.com",
+    "databaseURL": "https://lane-claim.firebaseio.com",
+    "projectId": "lane-claim",
+    "storageBucket": "lane-claim.appspot.com",
+    "messagingSenderId": "532354359258"
+}
+
+firebase = pyrebase.initialize_app(config)
+
 
 img = PIL.Image.open('IMG.jpg')
 
@@ -16,7 +30,13 @@ for key in exif['GPSInfo'].keys():
     gpsinfo[decode] = exif['GPSInfo'][key]
 
 
+"""
+convert_to_degrees() and get_lat_lon() were written by maxbellec and can be
+viewed at https://gist.github.com/maxbellec/dbb60d136565e3c4b805931f5aad2c6d
+"""
+
 get_float = lambda x: float(x[0]) / float(x[1])
+
 def convert_to_degrees(value):
     d = get_float(value[0])
     m = get_float(value[1])
@@ -41,6 +61,5 @@ def get_lat_lon(info):
         return None
 
 
-# print(convert_to_degrees(gpsinfo['GPSLatitude']))
 
 print(get_lat_lon(exif_data))
