@@ -13,7 +13,7 @@ config = {
 }
 
 firebase = pyrebase.initialize_app(config)
-
+db = firebase.database()
 
 img = PIL.Image.open('IMG.jpg')
 
@@ -62,4 +62,5 @@ def get_lat_lon(info):
 
 
 
-print(get_lat_lon(exif_data))
+photo = {"GPS": get_lat_lon(exif_data), "License": {"Number": "229YBL", "State": "WI"}}
+db.child("photos").child("one").set(photo)
