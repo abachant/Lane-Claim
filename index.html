@@ -29,7 +29,8 @@
               <h4 class="modal-title">Upload</h4>
             </div>
             <div class="modal-body">
-              <input type="file" name="myImage" accept="image/.jpeg" />
+              <progress value="0" max="100" id="uploader">0%</progress>
+              <input type="file" name="myImage" id="fileButton" accept="image/.jpeg" />
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -44,18 +45,7 @@
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
-  <script>
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyCs5jBiHX_nzPmzmOPlsA2lf9o6EdS9goo",
-      authDomain: "lane-claim.firebaseapp.com",
-      databaseURL: "https://lane-claim.firebaseio.com",
-      projectId: "lane-claim",
-      storageBucket: "lane-claim.appspot.com",
-      messagingSenderId: "532354359258"
-    };
-    firebase.initializeApp(config);
-  </script>
+  <script src="app.js"></script>
 </body>
 
 </html>
