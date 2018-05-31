@@ -1,7 +1,8 @@
 import PIL.Image
 import PIL.ExifTags
 import pyrebase
-
+import urllib.request
+import io
 
 config = {
     "apiKey": "AIzaSyCs5jBiHX_nzPmzmOPlsA2lf9o6EdS9goo",
@@ -14,8 +15,15 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
+storage = firebase.storage()
 
-img = PIL.Image.open('IMG.jpg')
+# Get the filepath for the image to be read
+img_url = storage.child("photos/IMG_2290.jpg").get_url(token=None)
+
+with urllib.request.urlopen(img_url) as url:
+    f = io.BytesIO(url.read())
+
+img = PIL.Image.open(f)
 
 exif_data = img._getexif()
 exif = {
@@ -59,7 +67,6 @@ def get_lat_lon(info):
         return lat, lon
     except KeyError:
         return None
-
 
 
 photo = {"GPS": get_lat_lon(exif_data), "License": {"Number": "229YBL", "State": "WI"}}
