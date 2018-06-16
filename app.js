@@ -22,11 +22,35 @@ function getExif() {
   var file = document.getElementById('fileButton').files[0];
   EXIF.getData(file, function() {
       var allMetaData = EXIF.getAllTags(this);
-      var allMetaDataSpan = document.getElementById("allMetaDataSpan");
-      allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
-      console.log(allMetaData);
+      // var allMetaDataSpan = document.getElementById("allMetaDataSpan");
+      // allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
+      // console.log(ConvertDMSToDD(allMetaData.GPSLongitude[0], allMetaData.GPSLongitude[1],allMetaData.GPSLongitude[2], ))
+      console.log(ParseDMS(allMetaData));
   });
 };
+
+function ParseDMS(input) {
+    var lat = ConvertDMSToDD(input.GPSLatitude[0], input.GPSLatitude[1], input.GPSLatitude[2], input.GPSLatitudeRef);
+    var lng = ConvertDMSToDD(input.GPSLongitude[0], input.GPSLongitude[1], input.GPSLongitude[2], input.GPSLongitudeRef);
+
+    return {
+        Latitude : lat,
+        Longitude: lng,
+        Position : lat + ',' + lng
+    }
+}
+
+
+function ConvertDMSToDD(degrees, minutes, seconds, direction) {
+    var dd = Number(degrees) + Number(minutes)/60 + Number(seconds)/(60*60);
+
+    if (direction == "S" || direction == "W") {
+        dd = dd * -1;
+    } // Don't do anything for N or E
+    return dd;
+}
+
+
 
 
 
