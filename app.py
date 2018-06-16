@@ -70,4 +70,5 @@ def get_lat_lon(info):
 
 
 photo = {"GPS": get_lat_lon(exif_data), "License": {"Number": "229YBL", "State": "WI"}}
-db.child("photos").child("one").set(photo)
+# db.child("photos").child("one").set(photo)
+print(photo)

@@ -9,22 +9,26 @@ var config = {
 };
 firebase.initializeApp(config);
 
-window.onload=getExif;
+// window.onload=getExif;
 
 var uploader = document.getElementById('uploader');
 var fileButton = document.getElementById('fileButton');
 
 
 // Handle uploading of photo input
-fileButton.addEventListener('change', function(e) {
+fileButton.addEventListener('change', getExif();
 
-  var file = e.target.files[0];
-
+function getExif() {
+  var file = document.getElementById('fileButton').files[0];
   EXIF.getData(file, function() {
-        var allMetaData = EXIF.getAllTags(this);
-        var allMetaDataSpan = document.getElementById("allMetaDataSpan");
-        allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
-    });
+      var allMetaData = EXIF.getAllTags(this);
+      var allMetaDataSpan = document.getElementById("allMetaDataSpan");
+      allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
+  });
+};
+
+
+
   // add following code to 'enter' when details are correct
   // var storageRef = firebase.storage().ref('photos/' + file.name);
   //
@@ -43,5 +47,9 @@ fileButton.addEventListener('change', function(e) {
   //   function complete() {
   //
   //   }
-  // )
-});
+  // )});
+
+// function printPic() {
+//   var allMetaDataSpan = document.getElementById("allMetaDataSpan");
+//   allMetaDataSpan.innerHTML = "fuuuuug";
+// };
