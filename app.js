@@ -25,7 +25,9 @@ function getExif() {
       // var allMetaDataSpan = document.getElementById("allMetaDataSpan");
       // allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
       // console.log(ConvertDMSToDD(allMetaData.GPSLongitude[0], allMetaData.GPSLongitude[1],allMetaData.GPSLongitude[2], ))
-      console.log(ParseDMS(allMetaData));
+      var gpsInfo = ParseDMS(allMetaData);
+      document.getElementById("latitude").value = gpsInfo.Latitude;
+      document.getElementById("longitude").value = gpsInfo.Longitude;
   });
 };
 
