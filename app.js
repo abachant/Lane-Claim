@@ -1,12 +1,12 @@
 // Initialize Firebase
 var config = {
-  apiKey: "AIzaSyCs5jBiHX_nzPmzmOPlsA2lf9o6EdS9goo",
-  authDomain: "lane-claim.firebaseapp.com",
-  databaseURL: "https://lane-claim.firebaseio.com",
-  projectId: "lane-claim",
-  storageBucket: "lane-claim.appspot.com",
-  messagingSenderId: "532354359258"
-};
+    apiKey: "AIzaSyCs5jBiHX_nzPmzmOPlsA2lf9o6EdS9goo",
+    authDomain: "lane-claim.firebaseapp.com",
+    databaseURL: "https://lane-claim.firebaseio.com",
+    projectId: "lane-claim",
+    storageBucket: "lane-claim.appspot.com",
+    messagingSenderId: "532354359258"
+  };
 firebase.initializeApp(config);
 
 // window.onload=getExif;
@@ -16,7 +16,7 @@ var fileButton = document.getElementById('fileButton');
 
 
 // Handle uploading of photo input
-fileButton.addEventListener('change', getExif();
+fileButton.addEventListener('change', getExif());
 
 function getExif() {
   var file = document.getElementById('fileButton').files[0];
@@ -24,6 +24,7 @@ function getExif() {
       var allMetaData = EXIF.getAllTags(this);
       var allMetaDataSpan = document.getElementById("allMetaDataSpan");
       allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
+      console.log(allMetaData);
   });
 };
 
