@@ -2,6 +2,7 @@ $( document ).ready(function() {
   var progressBar = $("#progressBar");
   var fileButton = $("#fileButton");
 
+  /*
   function getExif() {
     var file = fileButton.files[0];
     EXIF.getData(file, function() {
@@ -14,9 +15,11 @@ $( document ).ready(function() {
         $("#longitude").value = gpsInfo.Longitude;
     });
   };
+
   // Handle uploading of photo input
   fileButton.addEventListener('change', getExif());
-};
+  */
+});
 
 // Initialize Firebase
 var config = {
@@ -32,7 +35,7 @@ firebase.initializeApp(config);
 // window.onload=getExif;
 
 
-function ParseDMS(input) {
+function parseDMS(input) {
     var lat = ConvertDMSToDD(input.GPSLatitude[0], input.GPSLatitude[1], input.GPSLatitude[2], input.GPSLatitudeRef);
     var lng = ConvertDMSToDD(input.GPSLongitude[0], input.GPSLongitude[1], input.GPSLongitude[2], input.GPSLongitudeRef);
 
@@ -44,7 +47,7 @@ function ParseDMS(input) {
 }
 
 
-function ConvertDMSToDD(degrees, minutes, seconds, direction) {
+function convertDMSToDD(degrees, minutes, seconds, direction) {
     var dd = Number(degrees) + Number(minutes)/60 + Number(seconds)/(60*60);
 
     if (direction == "S" || direction == "W") {
