@@ -1,3 +1,23 @@
+$( document ).ready(function() {
+  var progressBar = $("#progressBar");
+  var fileButton = $("#fileButton");
+
+  function getExif() {
+    var file = fileButton.files[0];
+    EXIF.getData(file, function() {
+        var allMetaData = EXIF.getAllTags(this);
+        // var allMetaDataSpan = document.getElementById("allMetaDataSpan");
+        // allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
+        // console.log(ConvertDMSToDD(allMetaData.GPSLongitude[0], allMetaData.GPSLongitude[1],allMetaData.GPSLongitude[2], ))
+        var gpsInfo = ParseDMS(allMetaData);
+        $("#latitude").value = gpsInfo.Latitude;
+        $("#longitude").value = gpsInfo.Longitude;
+    });
+  };
+  // Handle uploading of photo input
+  fileButton.addEventListener('change', getExif());
+};
+
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyCs5jBiHX_nzPmzmOPlsA2lf9o6EdS9goo",
@@ -11,25 +31,6 @@ firebase.initializeApp(config);
 
 // window.onload=getExif;
 
-var uploader = document.getElementById('uploader');
-var fileButton = document.getElementById('fileButton');
-
-
-// Handle uploading of photo input
-fileButton.addEventListener('change', getExif());
-
-function getExif() {
-  var file = document.getElementById('fileButton').files[0];
-  EXIF.getData(file, function() {
-      var allMetaData = EXIF.getAllTags(this);
-      // var allMetaDataSpan = document.getElementById("allMetaDataSpan");
-      // allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
-      // console.log(ConvertDMSToDD(allMetaData.GPSLongitude[0], allMetaData.GPSLongitude[1],allMetaData.GPSLongitude[2], ))
-      var gpsInfo = ParseDMS(allMetaData);
-      document.getElementById("latitude").value = gpsInfo.Latitude;
-      document.getElementById("longitude").value = gpsInfo.Longitude;
-  });
-};
 
 function ParseDMS(input) {
     var lat = ConvertDMSToDD(input.GPSLatitude[0], input.GPSLatitude[1], input.GPSLatitude[2], input.GPSLatitudeRef);
