@@ -1,24 +1,32 @@
 $( document ).ready(function() {
   var progressBar = $("#progressBar");
-  var fileButton = $("#fileButton");
 
-  /*
-  function getExif() {
-    var file = fileButton.files[0];
+  function getExif(file) {
     EXIF.getData(file, function() {
         var allMetaData = EXIF.getAllTags(this);
-        // var allMetaDataSpan = document.getElementById("allMetaDataSpan");
-        // allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
-        // console.log(ConvertDMSToDD(allMetaData.GPSLongitude[0], allMetaData.GPSLongitude[1],allMetaData.GPSLongitude[2], ))
-        var gpsInfo = ParseDMS(allMetaData);
-        $("#latitude").value = gpsInfo.Latitude;
-        $("#longitude").value = gpsInfo.Longitude;
+        var gpsInfo = parseDMS(allMetaData);
+        var latitude = gpsInfo.Latitude;
+        var longitude = gpsInfo.Longitude;
+
+        return {};
     });
   };
 
+  function confirmDetails() {
+    var fileButton = document.getElementById('fileButton');
+    var file = fileButton.files[0];
+
+    if (file) {
+      var exifData = getExif(file);
+      $('#uploadModal').modal('hide');
+      $('#confirmDetailsModal').modal('show');
+    }
+  }
+
   // Handle uploading of photo input
-  fileButton.addEventListener('change', getExif());
-  */
+  $('#nextButton').click(function() {
+    confirmDetails();
+  });
 });
 
 // Initialize Firebase
@@ -29,11 +37,10 @@ var config = {
     projectId: "lane-claim",
     storageBucket: "lane-claim.appspot.com",
     messagingSenderId: "532354359258"
-  };
+};
 firebase.initializeApp(config);
 
 // window.onload=getExif;
-
 
 function parseDMS(input) {
     var lat = ConvertDMSToDD(input.GPSLatitude[0], input.GPSLatitude[1], input.GPSLatitude[2], input.GPSLatitudeRef);
@@ -46,7 +53,6 @@ function parseDMS(input) {
     }
 }
 
-
 function convertDMSToDD(degrees, minutes, seconds, direction) {
     var dd = Number(degrees) + Number(minutes)/60 + Number(seconds)/(60*60);
 
@@ -55,10 +61,6 @@ function convertDMSToDD(degrees, minutes, seconds, direction) {
     } // Don't do anything for N or E
     return dd;
 }
-
-
-
-
 
   // add following code to 'enter' when details are correct
   // var storageRef = firebase.storage().ref('photos/' + file.name);
