@@ -38,13 +38,12 @@ var config = {
     storageBucket: "lane-claim.appspot.com",
     messagingSenderId: "532354359258"
 };
+
 firebase.initializeApp(config);
 
-// window.onload=getExif;
-
 function parseDMS(input) {
-    var lat = ConvertDMSToDD(input.GPSLatitude[0], input.GPSLatitude[1], input.GPSLatitude[2], input.GPSLatitudeRef);
-    var lng = ConvertDMSToDD(input.GPSLongitude[0], input.GPSLongitude[1], input.GPSLongitude[2], input.GPSLongitudeRef);
+    var lat = convertDMSToDD(input.GPSLatitude[0], input.GPSLatitude[1], input.GPSLatitude[2], input.GPSLatitudeRef);
+    var lng = convertDMSToDD(input.GPSLongitude[0], input.GPSLongitude[1], input.GPSLongitude[2], input.GPSLongitudeRef);
 
     return {
         Latitude : lat,

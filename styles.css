@@ -1,3 +1,7 @@
-#mapid {
+#primaryMap {
   height: 900px;
+}
+
+#confirmMap {
+  height: 200px;
 }
