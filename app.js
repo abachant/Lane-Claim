@@ -1,14 +1,17 @@
-$( document ).ready(function() {
+$(document).ready(function() {
   var progressBar = $("#progressBar");
 
-  function getExif(file) {
+  function getExif(file, callback) {
     EXIF.getData(file, function() {
-        var allMetaData = EXIF.getAllTags(this);
-        var gpsInfo = parseDMS(allMetaData);
-        var latitude = gpsInfo.Latitude;
-        var longitude = gpsInfo.Longitude;
+      var allMetaData = EXIF.getAllTags(this);
+      var gpsInfo = parseDMS(allMetaData);
+      var exifInfo = {
+        latitude: gpsInfo.Latitude,
+        longitude: gpsInfo.Longitude,
+        dateTime: allMetaData.DateTime
+      };
 
-        return {};
+      callback(exifInfo);
     });
   };
 
@@ -17,9 +20,13 @@ $( document ).ready(function() {
     var file = fileButton.files[0];
 
     if (file) {
-      var exifData = getExif(file);
-      $('#uploadModal').modal('hide');
-      $('#confirmDetailsModal').modal('show');
+      getExif(file, function(exifData) {
+        $('#uploadModal').modal('hide');
+        $('#confirmDetailsModal').modal('show');
+
+        console.log(exifData.dateTime);
+        $('#photoDate').val(exifData.dateTime);
+      });
     }
   }
 
@@ -60,6 +67,25 @@ function convertDMSToDD(degrees, minutes, seconds, direction) {
     } // Don't do anything for N or E
     return dd;
 }
+
+
+var primaryMap = L.map('primaryMap').setView([0, 0], 2);
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+  maxZoom: 18,
+  id: 'mapbox.streets',
+  accessToken: 'pk.eyJ1IjoiYWJhY2hhbnQiLCJhIjoiY2podmE4NGZlMDM5bjNwbWRhdTVmZGk0eiJ9.jZ_IKv4_49wLhqwuSlqvHA'
+}).addTo(primaryMap);
+
+
+var confirmMap = L.map('confirmMap').setView([0, 0], 20);
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+  maxZoom: 18,
+  id: 'mapbox.streets',
+  accessToken: 'pk.eyJ1IjoiYWJhY2hhbnQiLCJhIjoiY2podmE4NGZlMDM5bjNwbWRhdTVmZGk0eiJ9.jZ_IKv4_49wLhqwuSlqvHA'
+}).addTo(confirmMap);
+
 
   // add following code to 'enter' when details are correct
   // var storageRef = firebase.storage().ref('photos/' + file.name);
