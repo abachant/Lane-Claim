@@ -34,6 +34,9 @@ $(document).ready(function() {
   $('#nextButton').click(function() {
     confirmDetails();
   });
+
+  $('#photoDate').datetimepicker();
+
 });
 
 // Initialize Firebase
