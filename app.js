@@ -35,7 +35,7 @@ $(document).ready(function() {
     confirmDetails();
   });
 
-  $('#photoDate').datetimepicker();
+  $('#photoDate').datepicker({});
 
 });
 
