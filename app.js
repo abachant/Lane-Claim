@@ -26,6 +26,7 @@ $(document).ready(function() {
 
         console.log(exifData.dateTime);
         $('#photoDate').val(exifData.dateTime);
+        var marker = L.marker([exifData.latitude, exifData.longitude]).addTo(confirmMap);
       });
     }
   }
@@ -33,6 +34,7 @@ $(document).ready(function() {
   // Handle uploading of photo input
   $('#nextButton').click(function() {
     confirmDetails();
+
   });
 
 
