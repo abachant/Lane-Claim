@@ -35,7 +35,6 @@ $(document).ready(function() {
     confirmDetails();
   });
 
-  $('#photoDate').datepicker({});
 
 });
 
