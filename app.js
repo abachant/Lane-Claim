@@ -27,6 +27,7 @@ $(document).ready(function() {
         console.log(exifData.dateTime);
         $('#photoDate').val(exifData.dateTime);
         var marker = L.marker([exifData.latitude, exifData.longitude]).addTo(confirmMap);
+        confirmMap.panTo(new L.LatLng(exifData.latitude, exifData.longitude));
       });
     }
   }
