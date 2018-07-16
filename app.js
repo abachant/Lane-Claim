@@ -29,13 +29,16 @@ $(document).ready(function() {
         var marker = L.marker([exifData.latitude, exifData.longitude]).addTo(confirmMap);
         confirmMap.panTo(new L.LatLng(exifData.latitude, exifData.longitude));
       });
-    }
-  }
+    };
+  };
 
   // Handle uploading of photo input
   $('#nextButton').click(function() {
     confirmDetails();
-
+  });
+  $('#backButton').click(function() {
+    $('#confirmDetailsModal').modal('hide');
+    $('#uploadModal').modal('show');
   });
 
 
