@@ -28,6 +28,10 @@ $(document).ready(function() {
         $('#photoDate').val(exifData.dateTime);
         var marker = L.marker([exifData.latitude, exifData.longitude]).addTo(confirmMap);
         confirmMap.panTo(new L.LatLng(exifData.latitude, exifData.longitude));
+
+        // Create filename for photo for storing/databasing
+        var fileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude;
+        console.log(fileName);
       });
     };
   };
@@ -53,6 +57,7 @@ var config = {
     storageBucket: "lane-claim.appspot.com",
     messagingSenderId: "532354359258"
 };
+
 
 firebase.initializeApp(config);
 
@@ -95,26 +100,26 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(confirmMap);
 
 
-  // add following code to 'enter' when details are correct
-  // var storageRef = firebase.storage().ref('photos/' + file.name);
-  //
-  // var task = storageRef.put(file);
-
-  // task.on('state_changed',
-  //   function progress(snapshot) {
-  //     var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //     uploader.value = percentage;
-  //   },
-  //
-  //   function error(err) {
-  //
-  //   },
-  //
-  //   function complete() {
-  //
-  //   }
-  // )});
-
+//   add following code to 'enter' when details are correct
+//   var storageRef = firebase.storage().ref('photos/' + file.name);
+//
+//   var task = storageRef.put(file);
+//
+//   task.on('state_changed',
+//     function progress(snapshot) {
+//       var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+//       uploader.value = percentage;
+//     },
+//
+//     function error(err) {
+//
+//     },
+//
+//     function complete() {
+//
+//     }
+//   )});
+//
 // function printPic() {
 //   var allMetaDataSpan = document.getElementById("allMetaDataSpan");
 //   allMetaDataSpan.innerHTML = "fuuuuug";
