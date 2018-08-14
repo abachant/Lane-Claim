@@ -24,14 +24,12 @@ $(document).ready(function() {
         $('#uploadModal').modal('hide');
         $('#confirmDetailsModal').modal('show');
 
-        console.log(exifData.dateTime);
         $('#photoDate').val(exifData.dateTime);
         var marker = L.marker([exifData.latitude, exifData.longitude]).addTo(confirmMap);
         confirmMap.panTo(new L.LatLng(exifData.latitude, exifData.longitude));
 
         // Create filename for photo for storing/databasing
         var fileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude;
-        console.log(fileName);
       });
     };
   };
@@ -40,9 +38,16 @@ $(document).ready(function() {
   $('#nextButton').click(function() {
     confirmDetails();
   });
+
   $('#backButton').click(function() {
     $('#confirmDetailsModal').modal('hide');
     $('#uploadModal').modal('show');
+  });
+
+  // Handle uploading and saving photo to Firebase Storage
+  $('#saveButton').click(function() {
+    var storageRef = firebase.storage().ref('photos/' + fileName);
+    storageRef.put(file);
   });
 
 
