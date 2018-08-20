@@ -48,7 +48,9 @@ $(document).ready(function() {
   // Handle uploading and saving photo to Firebase Storage
   $('#saveButton').click(function() {
     var storageRef = firebase.storage().ref('photos/' + fileName);
-    storageRef.put(file);
+    if (typeof file !== "undefined") {
+      storageRef.put(file);
+    }
   });
 
 
