@@ -1,5 +1,6 @@
 $(document).ready(function() {
   var progressBar = $("#progressBar");
+  var file;
 
   function getExif(file, callback) {
     EXIF.getData(file, function() {
@@ -17,7 +18,7 @@ $(document).ready(function() {
 
   function confirmDetails() {
     var fileButton = document.getElementById('fileButton');
-    var file = fileButton.files[0];
+    file = fileButton.files[0];
 
     if (file) {
       getExif(file, function(exifData) {
@@ -29,7 +30,7 @@ $(document).ready(function() {
         confirmMap.panTo(new L.LatLng(exifData.latitude, exifData.longitude));
 
         // Create filename for photo for storing/databasing
-        var fileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude;
+        fileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude;
       });
     };
   };
