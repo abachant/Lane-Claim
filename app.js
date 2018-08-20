@@ -51,6 +51,8 @@ $(document).ready(function() {
     if (typeof file !== "undefined") {
       storageRef.put(file);
     }
+    $('#confirmDetailsModal').modal('hide');
+    $('#progressModal').modal('show');
   });
 
 
