@@ -45,11 +45,19 @@ $(document).ready(function() {
     $('#uploadModal').modal('show');
   });
 
-  // Handle uploading and saving photo to Firebase Storage
+  // Handle writing and saving photo to Firebase
   $('#saveButton').click(function() {
     var storageRef = firebase.storage().ref('photos/' + fileName);
     if (typeof file !== "undefined") {
       storageRef.put(file);
+      firebase.database().ref('incidents/' + 'fileName').set({
+        name: 'testname',
+        latitude: 'tsetemail',
+        longitude: 'testimageUrl',
+        licensePlate: 'testLicensePlate',
+        state: 'testState',
+        comment: 'testComment'
+      });
     }
     $('#confirmDetailsModal').modal('hide');
     $('#progressModal').modal('show');
@@ -67,8 +75,6 @@ var config = {
     messagingSenderId: "532354359258"
 };
 firebase.initializeApp(config);
-
-var database = firebase.database();
 
 
 function parseDMS(input) {
