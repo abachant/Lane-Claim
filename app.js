@@ -25,12 +25,17 @@ $(document).ready(function() {
         $('#uploadModal').modal('hide');
         $('#confirmDetailsModal').modal('show');
 
-        $('#photoDate').val(exifData.dateTime);
-        var marker = L.marker([exifData.latitude, exifData.longitude]).addTo(confirmMap);
+        file.dateTime = exifData.dateTime;
+        file.latitude = exifData.latitude;
+        file.longitude = exifData.longitude;
+
+        // Add temporary marker to confirmMap Modal
+        var marker = L.marker([file.latitude, file.longitude]).addTo(confirmMap);
         confirmMap.panTo(new L.LatLng(exifData.latitude, exifData.longitude));
 
         // Create filename for photo for storing/databasing
         fileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude;
+        fileName = fileName.replace(/\./g,'p');
       });
     };
   };
@@ -47,16 +52,17 @@ $(document).ready(function() {
 
   // Handle writing and saving photo to Firebase
   $('#saveButton').click(function() {
-    var storageRef = firebase.storage().ref('photos/' + fileName);
+    var storageRef = firebase.storage().ref(`photos/${fileName}`);
     if (typeof file !== "undefined") {
       storageRef.put(file);
-      firebase.database().ref('incidents/' + 'fileName').set({
+      firebase.database().ref(`incidents/${fileName}`).set({
         name: 'testname',
-        latitude: 'tsetemail',
-        longitude: 'testimageUrl',
-        licensePlate: 'testLicensePlate',
-        state: 'testState',
-        comment: 'testComment'
+        dateTime: file.dateTime,
+        latitude: file.latitude,
+        longitude: file.longitude,
+        licensePlate: document.getElementById('licensePlate').value,
+        state: document.getElementById('stateSelector').value,
+        comment: document.getElementById('pictureComment').value
       });
     }
     $('#confirmDetailsModal').modal('hide');
