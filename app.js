@@ -66,8 +66,19 @@ $(document).ready(function() {
       });
     }
     $('#confirmDetailsModal').modal('hide');
-    $('#progressModal').modal('show');
+    $('#successfulUploadModal').modal('show');
   });
+
+  // Handle exiting successfulUploadModal
+  $('#exitToMapButton').click(function() {
+    $('#successfulUploadModal').modal('hide');
+  });
+
+  $('#anotherClaimButton').click(function() {
+    $('#successfulUploadModal').modal('hide');
+    // $('uploadModal').modal('show');
+  });
+
 });
 
 
@@ -80,6 +91,7 @@ var config = {
     storageBucket: "lane-claim.appspot.com",
     messagingSenderId: "532354359258"
 };
+
 firebase.initializeApp(config);
 
 
