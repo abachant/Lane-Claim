@@ -43,6 +43,7 @@
           </div>
           <div class="modal-body">
             <input type="file" name="myImage" id="fileButton" accept="image/.jpeg" />
+            <p id="fileExtensionAlert">File must be a jpeg</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -138,7 +139,7 @@
       </div>
     </div>
 
-    <!-- Modal for progress of upload -->
+    <!-- Modal for action after successful upload -->
     <div class="modal" tabindex="-1" role="dialog" id="successfulUploadModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

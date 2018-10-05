@@ -16,11 +16,19 @@ $(document).ready(function() {
     });
   };
 
+  function checkFileExtension(file) {
+    if (file.name.slice(-3)=='jpg' || file.name.slice(-4)=='jpeg') {
+      return true
+    } else {
+      return false
+    };
+  };
+
   function confirmDetails() {
     var fileButton = document.getElementById('fileButton');
     file = fileButton.files[0];
 
-    if (file) {
+    if (checkFileExtension(file)) {
       getExif(file, function(exifData) {
         $('#uploadModal').modal('hide');
         $('#confirmDetailsModal').modal('show');
@@ -35,8 +43,11 @@ $(document).ready(function() {
 
         // Create filename for photo for storing/databasing
         fileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude;
+        // Convert all '.'s to 'p's because they aren't allowed to be used in firebase names
         fileName = fileName.replace(/\./g,'p');
       });
+    } else {
+      $('#fileExtensionAlert').show();
     };
   };
 
@@ -45,6 +56,7 @@ $(document).ready(function() {
     confirmDetails();
   });
 
+  // Handle going back from confirmDetailsModal
   $('#backButton').click(function() {
     $('#confirmDetailsModal').modal('hide');
     $('#uploadModal').modal('show');
@@ -74,9 +86,9 @@ $(document).ready(function() {
     $('#successfulUploadModal').modal('hide');
   });
 
+  // Handle adding another claim from successfulUploadModal
   $('#anotherClaimButton').click(function() {
     $('#successfulUploadModal').modal('hide');
-    // $('uploadModal').modal('show');
   });
 
 });

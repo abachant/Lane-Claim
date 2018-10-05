@@ -5,3 +5,8 @@
 #confirmMap {
   height: 200px;
 }
+
+#fileExtensionAlert {
+  display: none;
+  color: red;
+}
