@@ -2,6 +2,9 @@ $(document).ready(function() {
   var progressBar = $("#progressBar");
   var file;
 
+  /**
+  * Retrieve latitude, longitude, and datetime of photo from its exif data
+  */
   function getExif(file, callback) {
     EXIF.getData(file, function() {
       var allMetaData = EXIF.getAllTags(this);
@@ -16,6 +19,9 @@ $(document).ready(function() {
     });
   };
 
+  /**
+  * Use last characters of file name to determine whether or not it is a jpeg
+  */
   function checkFileExtension(file) {
     if (file.name.slice(-3)=='jpg' || file.name.slice(-4)=='jpeg') {
       return true
@@ -24,6 +30,9 @@ $(document).ready(function() {
     };
   };
 
+  /**
+  * Have user confirm the file's info to be uploaded to firebase
+  */
   function confirmDetails() {
     var fileButton = document.getElementById('fileButton');
     file = fileButton.files[0];
@@ -106,7 +115,9 @@ var config = {
 
 firebase.initializeApp(config);
 
-
+/**
+* Get raw longitude and latitude data from a file's metadata
+*/
 function parseDMS(input) {
     var lat = convertDMSToDD(input.GPSLatitude[0], input.GPSLatitude[1], input.GPSLatitude[2], input.GPSLatitudeRef);
     var lng = convertDMSToDD(input.GPSLongitude[0], input.GPSLongitude[1], input.GPSLongitude[2], input.GPSLongitudeRef);
@@ -118,6 +129,10 @@ function parseDMS(input) {
     }
 }
 
+/**
+* Convert a latitude longitude position from DMS(degrees, minutes, seconds) to
+* DD(decimal degrees)
+*/
 function convertDMSToDD(degrees, minutes, seconds, direction) {
     var dd = Number(degrees) + Number(minutes)/60 + Number(seconds)/(60*60);
 
