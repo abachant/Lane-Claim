@@ -1,0 +1,32 @@
+{
+  "name": "lane-claim",
+  "version": "1.0.0",
+  "description": "A progressive web app for tracking and reporting bike lane obstructions.",
+  "main": "app.js",
+  "dependencies": {
+    "eslint-config": "^0.3.0",
+    "eslint-config-rallycoding": "^3.2.0",
+    "exif-js": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.7.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gbachant/Lane-Claim.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gbachant/Lane-Claim/issues"
+  },
+  "homepage": "https://github.com/Gbachant/Lane-Claim#readme"
+}

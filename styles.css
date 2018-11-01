@@ -10,3 +10,8 @@
   display: none;
   color: red;
 }
+
+#fileNoGPSALert {
+  display: none;
+  color: red;
+}
