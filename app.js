@@ -99,6 +99,7 @@ $(document).ready(function () {
     }
     $('#confirmDetailsModal').modal('hide')
     $('#successfulUploadModal').modal('show')
+    $('#fileButton').val('')
   })
 
   // Handle exiting successfulUploadModal
