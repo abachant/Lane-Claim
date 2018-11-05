@@ -9,10 +9,14 @@ $(document).ready(function () {
     EXIF.getData(file, function () {
       var allMetaData = EXIF.getAllTags(this)
       var gpsInfo = parseDMS(allMetaData)
-      var exifInfo = {
-        latitude: gpsInfo.Latitude,
-        longitude: gpsInfo.Longitude,
-        dateTime: allMetaData.DateTime
+      if (gpsInfo) {
+        var exifInfo = {
+          latitude: gpsInfo.Latitude,
+          longitude: gpsInfo.Longitude,
+          dateTime: allMetaData.DateTime
+        }
+      } else {
+        var exifInfo = false
       }
 
       callback(exifInfo)
@@ -31,45 +35,37 @@ $(document).ready(function () {
   };
 
   /**
-  * Confirm that file has metadata for latitude and longitude
-  */
-  function checkFileGPS (file) {
-    if (file.latitude !== undefined || file.Longitude !== undefined) {
-      return true
-    } else {
-      return false
-    }
-  };
-
-  /**
   * Have user confirm the file's info to be uploaded to firebase
   */
   function confirmDetails () {
     var fileButton = document.getElementById('fileButton')
     file = fileButton.files[0]
+    EXIF.getData(file);
 
     if (checkFileExtension(file)) {
-      if (checkFileGPS(file)) {
         getExif(file, function (exifData) {
-          $('#uploadModal').modal('hide')
-          $('#confirmDetailsModal').modal('show')
+          // Make sure file has exif data before proceding
+          if (exifData) {
+            file.dateTime = exifData.dateTime
+            file.latitude = exifData.latitude
+            file.longitude = exifData.longitude
 
-          file.dateTime = exifData.dateTime
-          file.latitude = exifData.latitude
-          file.longitude = exifData.longitude
+            $('#fileNoGPSALert').hide()
+            $('#uploadModal').modal('hide')
+            $('#confirmDetailsModal').modal('show')
 
-          // Add temporary marker to confirmMap Modal
-          var marker = L.marker([file.latitude, file.longitude]).addTo(confirmMap)
-          confirmMap.panTo(new L.LatLng(exifData.latitude, exifData.longitude))
+            // Add temporary marker to confirmMap Modal
+            var marker = L.marker([file.latitude, file.longitude]).addTo(confirmMap)
+            confirmMap.panTo(new L.LatLng(exifData.latitude, exifData.longitude))
 
-          // Create filename for photo for storing/databasing
-          fileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude
-          // Convert all '.'s to 'p's because they aren't allowed to be used in firebase names
-          fileName = fileName.replace(/\./g, 'p')
+            // Create filename for photo for storing/databasing
+            fileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude
+            // Convert all '.'s to 'p's because they aren't allowed to be used in firebase names
+            fileName = fileName.replace(/\./g, 'p')
+          } else {
+            $('#fileNoGPSALert').show()
+          }
         })
-      } else {
-        $('#fileNoGPSALert').show()
-      }
     } else {
       $('#fileExtensionAlert').show()
     };
@@ -132,14 +128,19 @@ firebase.initializeApp(config)
 * Get raw longitude and latitude data from a file's metadata
 */
 function parseDMS (input) {
-  var lat = convertDMSToDD(input.GPSLatitude[0], input.GPSLatitude[1], input.GPSLatitude[2], input.GPSLatitudeRef)
-  var lng = convertDMSToDD(input.GPSLongitude[0], input.GPSLongitude[1], input.GPSLongitude[2], input.GPSLongitudeRef)
+  if (input.GPSLatitude !== undefined && input.GPSLongitude !== undefined) {
+    var lat = convertDMSToDD(input.GPSLatitude[0], input.GPSLatitude[1], input.GPSLatitude[2], input.GPSLatitudeRef)
+    var lng = convertDMSToDD(input.GPSLongitude[0], input.GPSLongitude[1], input.GPSLongitude[2], input.GPSLongitudeRef)
 
-  return {
-    Latitude: lat,
-    Longitude: lng,
-    Position: lat + ',' + lng
+    return {
+      Latitude: lat,
+      Longitude: lng,
+      Position: lat + ',' + lng
+    }
+  } else {
+    return false
   }
+
 }
 
 /**
