@@ -1,6 +1,11 @@
 $(document).ready(function () {
   var progressBar = $('#progressBar')
   var file
+  var database = firebase.database().ref()
+  var incidentsRef = database.child('incidents')
+  var storage = firebase.storage().ref()
+  var photosRef = storage.child('photos')
+
 
   /**
   * Retrieve latitude, longitude, and datetime of photo from its exif data
@@ -84,10 +89,9 @@ $(document).ready(function () {
 
   // Handle writing and saving photo to Firebase
   $('#saveButton').click(function () {
-    var storageRef = firebase.storage().ref(`photos/${fileName}`)
     if (typeof file !== 'undefined') {
-      storageRef.put(file)
-      firebase.database().ref(`incidents/${fileName}`).set({
+      storage.child(`${fileName}`).put(file)
+      incidentsRef.child(`${fileName}`).set({
         name: 'testname',
         dateTime: file.dateTime,
         latitude: file.latitude,
@@ -111,10 +115,15 @@ $(document).ready(function () {
   $('#anotherClaimButton').click(function () {
     $('#successfulUploadModal').modal('hide')
   })
+
+  database.on('value', function(snapshot){
+    console.log(snapshot.child('incidents/').val());
+  })
+
 })
 
 // Initialize Firebase
-var config = {
+const config = {
   apiKey: 'AIzaSyCs5jBiHX_nzPmzmOPlsA2lf9o6EdS9goo',
   authDomain: 'lane-claim.firebaseapp.com',
   databaseURL: 'https://lane-claim.firebaseio.com',
