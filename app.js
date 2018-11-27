@@ -5,6 +5,7 @@ $(document).ready(function () {
   var incidentsRef = database.child('incidents')
   var storage = firebase.storage().ref()
   var photosRef = storage.child('photos')
+  var incidentMarkers
 
 
   /**
@@ -116,8 +117,16 @@ $(document).ready(function () {
     $('#successfulUploadModal').modal('hide')
   })
 
+  // Update leaflet markers from firebase in real time
   database.on('value', function(snapshot){
-    console.log(snapshot.child('incidents/').val());
+    // console.log(snapshot.child('incidents/').val());
+    incidentMarkers = snapshot.child('incidents/').val();
+    console.log(incidentMarkers)
+    console.log(Object.keys(incidentMarkers).length)
+
+    for (var i = 0; i < Object.keys(incidentMarkers).length; i++) {
+			var marker = L.marker([incidentMarkers[Object.keys(incidentMarkers)[i]].latitude, incidentMarkers[Object.keys(incidentMarkers)[i]].longitude]).addTo(primaryMap);
+		}
   })
 
 })
