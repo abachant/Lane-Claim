@@ -92,14 +92,21 @@ $(document).ready(function () {
   $('#saveButton').click(function () {
     if (typeof file !== 'undefined') {
       storage.child(`${fileName}`).put(file)
-      incidentsRef.child(`${fileName}`).set({
-        name: 'testname',
-        dateTime: file.dateTime,
-        latitude: file.latitude,
-        longitude: file.longitude,
-        licensePlate: document.getElementById('licensePlate').value,
-        state: document.getElementById('stateSelector').value,
-        comment: document.getElementById('pictureComment').value
+      storage.child(`${fileName}`).getDownloadURL().then(function(url) {
+        // `url` is the download URL for 'storage.child(fileName).jpg'
+        downloadURL = url
+        incidentsRef.child(`${fileName}`).set({
+          name: fileName,
+          imgDownloadURL: downloadURL,
+          dateTime: file.dateTime,
+          latitude: file.latitude,
+          longitude: file.longitude,
+          licensePlate: document.getElementById('licensePlate').value,
+          state: document.getElementById('stateSelector').value,
+          comment: document.getElementById('pictureComment').value
+        })
+      }).catch(function(error) {
+        console.error(error)
       })
     }
     $('#confirmDetailsModal').modal('hide')
@@ -117,17 +124,16 @@ $(document).ready(function () {
     $('#successfulUploadModal').modal('hide')
   })
 
-  // Update leaflet markers from firebase in real time
-  database.on('value', function(snapshot){
-    // console.log(snapshot.child('incidents/').val());
-    incidentMarkers = snapshot.child('incidents/').val();
-    console.log(incidentMarkers)
-    console.log(Object.keys(incidentMarkers).length)
-
-    for (var i = 0; i < Object.keys(incidentMarkers).length; i++) {
-			var marker = L.marker([incidentMarkers[Object.keys(incidentMarkers)[i]].latitude, incidentMarkers[Object.keys(incidentMarkers)[i]].longitude]).addTo(primaryMap);
-		}
-  })
+  // // Update leaflet markers from firebase in real time
+  // database.on('value', function(snapshot){
+  //   incidentMarkers = snapshot.child('incidents/').val();
+  //
+  //   for (var i = 0; i < Object.keys(incidentMarkers).length; i++) {
+	// 		var marker = L.marker([incidentMarkers[Object.keys(incidentMarkers)[i]].latitude, incidentMarkers[Object.keys(incidentMarkers)[i]].longitude]).addTo(primaryMap);
+  //     console.log(incidentMarkers[Object.keys(incidentMarkers)[i]].name)
+  //     marker.bindPopup(`<img src="" id="myimg" alt="Photo of parking incident"> ${incidentMarkers[Object.keys(incidentMarkers)[i]].latitude}`)
+	// 	}
+  // })
 
 })
 
