@@ -15,3 +15,8 @@
   display: none;
   color: red;
 }
+
+.markerIncidentPhoto {
+  height: auto;
+  width: 200px;
+}

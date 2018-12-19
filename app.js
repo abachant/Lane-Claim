@@ -124,16 +124,21 @@ $(document).ready(function () {
     $('#successfulUploadModal').modal('hide')
   })
 
-  // // Update leaflet markers from firebase in real time
-  // database.on('value', function(snapshot){
-  //   incidentMarkers = snapshot.child('incidents/').val();
-  //
-  //   for (var i = 0; i < Object.keys(incidentMarkers).length; i++) {
-	// 		var marker = L.marker([incidentMarkers[Object.keys(incidentMarkers)[i]].latitude, incidentMarkers[Object.keys(incidentMarkers)[i]].longitude]).addTo(primaryMap);
-  //     console.log(incidentMarkers[Object.keys(incidentMarkers)[i]].name)
-  //     marker.bindPopup(`<img src="" id="myimg" alt="Photo of parking incident"> ${incidentMarkers[Object.keys(incidentMarkers)[i]].latitude}`)
-	// 	}
-  // })
+  // Update leaflet markers from firebase in real time
+  database.on('value', function(snapshot){
+    incidentMarkers = snapshot.child('incidents/').val();
+
+    for (var i = 0; i < Object.keys(incidentMarkers).length; i++) {
+			var marker = L.marker([incidentMarkers[Object.keys(incidentMarkers)[i]].latitude, incidentMarkers[Object.keys(incidentMarkers)[i]].longitude]).addTo(primaryMap);
+      console.log(incidentMarkers[Object.keys(incidentMarkers)[i]].name)
+      marker.bindPopup(
+        `<img src="${incidentMarkers[Object.keys(incidentMarkers)[i]].imgDownloadURL}" alt="Photo of parking incident" class="markerIncidentPhoto">
+        <p>License Plate: ${incidentMarkers[Object.keys(incidentMarkers)[i]].licensePlate}</p>
+        <p>License State: ${incidentMarkers[Object.keys(incidentMarkers)[i]].state}</p>
+        <p>Comment: ${incidentMarkers[Object.keys(incidentMarkers)[i]].comment}</p>`
+      )
+		}
+  })
 
 })
 
