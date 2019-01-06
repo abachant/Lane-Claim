@@ -132,10 +132,12 @@ $(document).ready(function () {
 			var marker = L.marker([incidentMarkers[Object.keys(incidentMarkers)[i]].latitude, incidentMarkers[Object.keys(incidentMarkers)[i]].longitude]).addTo(primaryMap);
       console.log(incidentMarkers[Object.keys(incidentMarkers)[i]].name)
       marker.bindPopup(
-        `<img src="${incidentMarkers[Object.keys(incidentMarkers)[i]].imgDownloadURL}" alt="Photo of parking incident" class="markerIncidentPhoto">
+        `<div class="markerPopup">
+        <img src="${incidentMarkers[Object.keys(incidentMarkers)[i]].imgDownloadURL}" alt="Photo of parking incident" class="markerIncidentPhoto">
         <p>License Plate: ${incidentMarkers[Object.keys(incidentMarkers)[i]].licensePlate}</p>
         <p>License State: ${incidentMarkers[Object.keys(incidentMarkers)[i]].state}</p>
-        <p>Comment: ${incidentMarkers[Object.keys(incidentMarkers)[i]].comment}</p>`
+        <p>Comment: ${incidentMarkers[Object.keys(incidentMarkers)[i]].comment}</p>
+        </div>`
       )
 		}
   })
@@ -193,6 +195,8 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   id: 'mapbox.streets',
   accessToken: 'pk.eyJ1IjoiYWJhY2hhbnQiLCJhIjoiY2podmE4NGZlMDM5bjNwbWRhdTVmZGk0eiJ9.jZ_IKv4_49wLhqwuSlqvHA'
 }).addTo(primaryMap)
+
+primaryMap.locate({setView: true, maxZoom: 16});
 
 var confirmMap = L.map('confirmMap').setView([0, 0], 20)
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
