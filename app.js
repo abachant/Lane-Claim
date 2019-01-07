@@ -1,10 +1,10 @@
+/* global $, firebase, EXIF, L */
+
 $(document).ready(function () {
-  var progressBar = $('#progressBar')
   var file
   var database = firebase.database().ref()
   var incidentsRef = database.child('incidents')
   var storage = firebase.storage().ref()
-  var photosRef = storage.child('photos')
   var incidentMarkers
 
 
@@ -15,19 +15,18 @@ $(document).ready(function () {
     EXIF.getData(file, function () {
       var allMetaData = EXIF.getAllTags(this)
       var gpsInfo = parseDMS(allMetaData)
+      var exifInfo = false
       if (gpsInfo) {
-        var exifInfo = {
+        exifInfo = {
           latitude: gpsInfo.Latitude,
           longitude: gpsInfo.Longitude,
           dateTime: allMetaData.DateTime
         }
-      } else {
-        var exifInfo = false
       }
 
       callback(exifInfo)
     })
-  };
+  }
 
   /**
   * Determine whether or not file is a jpeg
@@ -38,7 +37,7 @@ $(document).ready(function () {
     } else {
       return false
     }
-  };
+  }
 
   /**
   * Have user confirm the file's info to be uploaded to firebase
@@ -61,7 +60,7 @@ $(document).ready(function () {
             $('#confirmDetailsModal').modal('show')
 
             // Add temporary marker to confirmMap Modal
-            var marker = L.marker([file.latitude, file.longitude]).addTo(confirmMap)
+            L.marker([file.latitude, file.longitude]).addTo(confirmMap)
             confirmMap.panTo(new L.LatLng(exifData.latitude, exifData.longitude))
 
             // Create filename for photo for storing/databasing
@@ -74,8 +73,8 @@ $(document).ready(function () {
         })
     } else {
       $('#fileExtensionAlert').show()
-    };
-  };
+    }
+  }
 
   // Handle uploading of photo input
   $('#nextButton').click(function () {
@@ -130,7 +129,7 @@ $(document).ready(function () {
 
     for (var i = 0; i < Object.keys(incidentMarkers).length; i++) {
 			var marker = L.marker([incidentMarkers[Object.keys(incidentMarkers)[i]].latitude, incidentMarkers[Object.keys(incidentMarkers)[i]].longitude]).addTo(primaryMap);
-      console.log(incidentMarkers[Object.keys(incidentMarkers)[i]].name)
+      // console.log(incidentMarkers[Object.keys(incidentMarkers)[i]].name)
       marker.bindPopup(
         `<div class="markerPopup">
         <img src="${incidentMarkers[Object.keys(incidentMarkers)[i]].imgDownloadURL}" alt="Photo of parking incident" class="markerIncidentPhoto">
@@ -182,26 +181,23 @@ function parseDMS (input) {
 function convertDMSToDD (degrees, minutes, seconds, direction) {
   var dd = Number(degrees) + Number(minutes) / 60 + Number(seconds) / (60 * 60)
 
-  if (direction === 'S' || direction === 'W') {
+  if (direction === 'S' || direction === 'W' || direction === 's' || direction === 'w') {
     dd = dd * -1
   } // Don't do anything for N or E
   return dd
 }
 
-var primaryMap = L.map('primaryMap').setView([0, 0], 2)
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+const leafletConfig = {
   attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
   maxZoom: 18,
   id: 'mapbox.streets',
   accessToken: 'pk.eyJ1IjoiYWJhY2hhbnQiLCJhIjoiY2podmE4NGZlMDM5bjNwbWRhdTVmZGk0eiJ9.jZ_IKv4_49wLhqwuSlqvHA'
-}).addTo(primaryMap)
+};
+
+var primaryMap = L.map('primaryMap').setView([0, 0], 2)
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', leafletConfig).addTo(primaryMap)
 
 primaryMap.locate({setView: true, maxZoom: 16});
 
 var confirmMap = L.map('confirmMap').setView([0, 0], 20)
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-  maxZoom: 18,
-  id: 'mapbox.streets',
-  accessToken: 'pk.eyJ1IjoiYWJhY2hhbnQiLCJhIjoiY2podmE4NGZlMDM5bjNwbWRhdTVmZGk0eiJ9.jZ_IKv4_49wLhqwuSlqvHA'
-}).addTo(confirmMap)
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', leafletConfig).addTo(confirmMap)
