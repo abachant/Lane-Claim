@@ -194,10 +194,10 @@ const leafletConfig = {
   accessToken: 'pk.eyJ1IjoiYWJhY2hhbnQiLCJhIjoiY2podmE4NGZlMDM5bjNwbWRhdTVmZGk0eiJ9.jZ_IKv4_49wLhqwuSlqvHA'
 };
 
-var primaryMap = L.map('primaryMap').setView([0, 0], 2)
+var primaryMap = L.map('primaryMap').setView([39.8283, -98.5795], 5)
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', leafletConfig).addTo(primaryMap)
 
-primaryMap.locate({setView: true, maxZoom: 16});
+primaryMap.locate({setView: true, maxZoom: 15});
 
 var confirmMap = L.map('confirmMap').setView([0, 0], 20)
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', leafletConfig).addTo(confirmMap)
