@@ -76,6 +76,13 @@ $(document).ready(function () {
     }
   }
 
+  // Clear file input before every new claim submittal
+  $('#newClaimButton').click(function () {
+    $('#fileButton').val('')
+    $('#fileNoGPSALert').hide()
+    $('#fileExtensionAlert').hide()
+  })
+
   // Handle uploading of photo input
   $('#nextButton').click(function () {
     confirmDetails()
