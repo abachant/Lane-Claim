@@ -18,13 +18,13 @@
     "jest": "^23.6.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Gbachant/Lane-Claim.git"
   },
-  "author": "",
+  "author": "Garrett Bachant",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Gbachant/Lane-Claim/issues"
