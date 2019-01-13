@@ -20,7 +20,10 @@
 <body>
   <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Lane Claim</a>
-    <button class="btn btn-success" type="button" id="newClaimButton" data-toggle="modal" data-target="#uploadModal">Submit New Claim</button>
+    <div>
+      <a href="#aboutModal" id="aboutButton">about</a>
+      <button class="btn btn-success newClaimButton" type="button">Submit New Claim</button>
+    </div>
   </nav>
 
   <!-- Primary Leaflet slippy map -->
@@ -42,18 +45,19 @@
             </button>
           </div>
           <div class="modal-body">
+            <h6>Upload an image of a vehicle obstructing a bike lane</h6>
             <input type="file" name="myImage" id="fileButton" accept="image/.jpeg" />
             <p id="fileExtensionAlert">File must be a jpeg</p>
             <p id="fileNoGPSALert">File does not contain GPS metadata</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary exitToMapButton">Close</button>
             <button type="button" class="btn btn-primary" id="nextButton">Next</button>
           </div>
         </div>
       </div>
     </div>
-    
+
     <!-- Modal for confirming photo submission details -->
     <div class="modal" tabindex="-1" role="dialog" id="confirmDetailsModal">
       <div class="modal-dialog" role="document">
@@ -151,8 +155,30 @@
             </button>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-success" id="anotherClaimButton" data-toggle="modal" data-target="#uploadModal">Submit Another Claim</button>
-            <button type="button" class="btn btn-secondary" id="exitToMapButton">Exit to Map</button>
+            <button type="button" class="btn btn-success newClaimButton">Submit Another Claim</button>
+            <button type="button" class="btn btn-secondary exitToMapButton">Exit to Map</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for about page -->
+    <div class="modal" tabindex="-1" role="dialog" id="aboutModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">About Lane Claim</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div>
+            <p>Lane Claim is progressive web app dedicated to protecting bike lanes from automobile obstructions and holding offenders acountable.</p>
+            <p>Simply take a picture of the offending vehicle and after sumbiting it Lane Claim will place a marker at its location with the offender's information.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success newClaimButton">Submit a Claim</button>
+            <button type="button" class="btn btn-secondary exitToMapButton">Exit to Map</button>
           </div>
         </div>
       </div>

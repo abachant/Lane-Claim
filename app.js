@@ -76,11 +76,14 @@ $(document).ready(function () {
     }
   }
 
-  // Clear file input before every new claim submittal
-  $('#newClaimButton').click(function () {
+  // Handle new claim submittal
+  $('.newClaimButton').click( () => {
     $('#fileButton').val('')
     $('#fileNoGPSALert').hide()
     $('#fileExtensionAlert').hide()
+    $('#uploadModal').modal('show')
+    $('#aboutModal').modal('hide')
+    $('#successfulUploadModal').modal('hide')
   })
 
   // Handle uploading of photo input
@@ -120,14 +123,16 @@ $(document).ready(function () {
     $('#fileButton').val('')
   })
 
-  // Handle exiting successfulUploadModal
-  $('#exitToMapButton').click(function () {
+  // Handle exiting a modal
+  $('.exitToMapButton').click(function () {
     $('#successfulUploadModal').modal('hide')
+    $('#aboutModal').modal('hide')
+    $('#uploadModal').modal('hide')
   })
 
-  // Handle adding another claim from successfulUploadModal
-  $('#anotherClaimButton').click(function () {
-    $('#successfulUploadModal').modal('hide')
+  // Handle showing aboutModal
+  $('#aboutButton').click(function () {
+    $('#aboutModal').modal('show')
   })
 
   // Update leaflet markers from firebase in real time
