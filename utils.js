@@ -40,3 +40,9 @@ function checkFileExtension (file) {
     return false
   }
 }
+
+module.exports = {
+  parseDMS,
+  convertDMSToDD,
+  checkFileExtension
+}
