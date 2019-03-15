@@ -33,7 +33,7 @@ function convertDMSToDD (degrees, minutes, seconds, direction) {
 /**
 * Determine whether or not file is a jpeg
 */
-function checkFileExtension (file) {
+function isFileExtensionJpeg (file) {
   if (file.type === 'image/jpeg') {
     return true
   } else {
@@ -44,5 +44,5 @@ function checkFileExtension (file) {
 module.exports = {
   parseDMS,
   convertDMSToDD,
-  checkFileExtension
+  isFileExtensionJpeg
 }

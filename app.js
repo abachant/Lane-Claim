@@ -35,7 +35,7 @@ $(document).ready(function () {
     var fileButton = document.getElementById('fileButton')
     file = fileButton.files[0]
     EXIF.getData(file);
-    if (checkFileExtension(file)) {
+    if (isFileExtensionJpeg(file)) {
         getExif(file, function (exifData) {
           // Make sure file has exif data before proceding
           if (exifData) {
