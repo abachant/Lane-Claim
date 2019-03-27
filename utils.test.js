@@ -2,9 +2,13 @@ const utils = require('./utils')
 
 const imgFile = {type: 'image/jpeg'}
 const pdfFile = {type: 'pdf'}
+const emptyFile = {}
+
+const emptyGPSData = {}
+const undefinedGPSData = {GPSLatitude: undefined, GPSLongitude: undefined}
+const undefinedGPSLatitude = {GPSLatitude: undefined, GPSLongitude: [10,6,36,'N']}
 
 describe('Utils functions', () => {
-
   describe('isFileExtensionJpeg function', () => {
     it('should return true for image/jpeg', () => {
       expect(utils.isFileExtensionJpeg(imgFile)).toBe(true)
@@ -12,6 +16,10 @@ describe('Utils functions', () => {
 
     it('should return false for pdf', () => {
       expect(utils.isFileExtensionJpeg(pdfFile)).toBe(false)
+    });
+
+    it('should return false for undefined', () => {
+      expect(utils.isFileExtensionJpeg(emptyFile)).toBe(false)
     });
   });
 
@@ -24,12 +32,60 @@ describe('Utils functions', () => {
       expect(utils.convertDMSToDD(10,6,36,'N')).toBe(10.11)
     });
 
+    it('should return -10.11 for 10,6,36,S', () => {
+      expect(utils.convertDMSToDD(10,6,36,'S')).toBe(-10.11)
+    });
+
     it('should return NaN for 10,6,NaN,N', () => {
       expect(utils.convertDMSToDD(10,6,NaN,'N')).toBe(NaN)
     });
 
     it('should return NaN for 10,6,undefined,N', () => {
       expect(utils.convertDMSToDD(10,6,undefined,'N')).toBe(NaN)
+    });
+  });
+
+  describe('parseDMS function', () => {
+    it('should return false for a file with no GPS data', () => {
+      expect(utils.parseDMS(emptyGPSData)).toBe(false)
+    });
+
+    it('should return false for undefined GPSLatitude and GPSLongitude', () => {
+      expect(utils.parseDMS(undefinedGPSData)).toBe(false)
+    });
+
+    it('should return false for undefined GPSLatitude', () => {
+      expect(utils.parseDMS(undefinedGPSLatitude)).toBe(false)
+    });
+
+    it('should return 0,0 for 0,0,0,N and 0,0,0,E', () => {
+      expect(utils.parseDMS(
+        {GPSLatitude:[0,0,0], GPSLatitudeRef:"N", GPSLongitude:[0,0,0], GPSLongitudeRef:"E"}
+      )).toEqual({Latitude:0, Longitude:0, Position:"0,0"})
+    });
+
+    it('should return 10.11,5.235 for 10,6,36,N and 5,14,6,E', () => {
+      expect(utils.parseDMS(
+        {GPSLatitude:[10,6,36], GPSLatitudeRef:"N", GPSLongitude:[5,14,6], GPSLongitudeRef:"E"}
+      )).toEqual({Latitude:10.11, Longitude:5.235, Position:"10.11,5.235"})
+    });
+
+    it('should return 10.11,-5.235 for 10,6,36,N and 5,14,6,W', () => {
+      expect(utils.parseDMS(
+        {GPSLatitude:[10,6,36], GPSLatitudeRef:"N", GPSLongitude:[5,14,6], GPSLongitudeRef:"W"}
+      )).toEqual({Latitude:10.11, Longitude:-5.235, Position:"10.11,-5.235"})
+    });
+
+    it('should return -10.11,5.235 for 10,6,36,S and 5,14,6,E', () => {
+      expect(utils.parseDMS(
+        {GPSLatitude:[10,6,36], GPSLatitudeRef:"S", GPSLongitude:[5,14,6], GPSLongitudeRef:"E"}
+      )).toEqual({Latitude:-10.11, Longitude:5.235, Position:"-10.11,5.235"})
+    });
+
+    it('should return -10.11,-5.235 for 10,6,36,S and 5,14,6,W', () => {
+      expect(utils.parseDMS(
+        {GPSLatitude:[10,6,36], GPSLatitudeRef:"S", GPSLongitude:[5,14,6], GPSLongitudeRef:"W"}
+      )).toEqual({Latitude:-10.11, Longitude:-5.235, Position:"-10.11,-5.235"})
     });
   });
 

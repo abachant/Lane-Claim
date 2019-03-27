@@ -14,7 +14,13 @@ $(document).ready(function () {
   function getExif (file, callback) {
     EXIF.getData(file, function () {
       var allMetaData = EXIF.getAllTags(this)
+
+      console.log(allMetaData)
+
       var gpsInfo = parseDMS(allMetaData)
+
+      console.log(gpsInfo)
+
       var exifInfo = false
       if (gpsInfo) {
         exifInfo = {
