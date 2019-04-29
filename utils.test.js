@@ -3,10 +3,7 @@ const utils = require('./utils')
 const imgFile = {type: 'image/jpeg'}
 const pdfFile = {type: 'pdf'}
 const emptyFile = {}
-
 const emptyGPSData = {}
-const undefinedGPSData = {GPSLatitude: undefined, GPSLongitude: undefined}
-const undefinedGPSLatitude = {GPSLatitude: undefined, GPSLongitude: [10,6,36,'N']}
 
 describe('Utils functions', () => {
   describe('isFileExtensionJpeg function', () => {
@@ -50,12 +47,16 @@ describe('Utils functions', () => {
       expect(utils.parseDMS(emptyGPSData)).toBe(false)
     });
 
-    it('should return false for undefined GPSLatitude and GPSLongitude', () => {
-      expect(utils.parseDMS(undefinedGPSData)).toBe(false)
+    it('should return false for undefined GPSLatitude, GPSLongitude, and their Refs', () => {
+      expect(utils.parseDMS(
+        {GPSLatitude:undefined, GPSLatitudeRef:undefined, GPSLongitude: undefined, GPSLongitudeRef:undefined}
+      )).toBe(false)
     });
 
     it('should return false for undefined GPSLatitude', () => {
-      expect(utils.parseDMS(undefinedGPSLatitude)).toBe(false)
+      expect(utils.parseDMS(
+        {GPSLatitude:undefined, GPSLatitudeRef:"N", GPSLongitude:[5,14,6], GPSLongitudeRef:"E"}
+      )).toBe(false)
     });
 
     it('should return 0,0 for 0,0,0,N and 0,0,0,E', () => {

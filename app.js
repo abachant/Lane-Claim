@@ -14,13 +14,7 @@ $(document).ready(function () {
   function getExif (file, callback) {
     EXIF.getData(file, function () {
       var allMetaData = EXIF.getAllTags(this)
-
-      console.log(allMetaData)
-
       var gpsInfo = parseDMS(allMetaData)
-
-      console.log(gpsInfo)
-
       var exifInfo = false
       if (gpsInfo) {
         exifInfo = {
@@ -40,33 +34,38 @@ $(document).ready(function () {
   function confirmDetails () {
     var fileButton = document.getElementById('fileButton')
     file = fileButton.files[0]
-    EXIF.getData(file);
-    if (isFileExtensionJpeg(file)) {
-        getExif(file, function (exifData) {
-          // Make sure file has exif data before proceding
-          if (exifData) {
-            file.dateTime = exifData.dateTime
-            file.latitude = exifData.latitude
-            file.longitude = exifData.longitude
+    if (file != undefined){
+      EXIF.getData(file);
+      $('#noFileAlert').hide()
+      if (isFileExtensionJpeg(file)) {
+          getExif(file, function (exifData) {
+            // Make sure file has exif data before proceding
+            if (exifData) {
+              file.dateTime = exifData.dateTime
+              file.latitude = exifData.latitude
+              file.longitude = exifData.longitude
 
-            $('#fileNoGPSALert').hide()
-            $('#uploadModal').modal('hide')
-            $('#confirmDetailsModal').modal('show')
+              $('#fileNoGPSALert').hide()
+              $('#uploadModal').modal('hide')
+              $('#confirmDetailsModal').modal('show')
 
-            // Add temporary marker to confirmMap Modal
-            L.marker([file.latitude, file.longitude]).addTo(confirmMap)
-            confirmMap.panTo(new L.LatLng(exifData.latitude, exifData.longitude))
+              // Add temporary marker to confirmMap Modal
+              L.marker([file.latitude, file.longitude]).addTo(confirmMap)
+              confirmMap.panTo(new L.LatLng(exifData.latitude, exifData.longitude))
 
-            // Create filename for photo for storing/databasing
-            fileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude
-            // Convert all '.'s to 'p's because they aren't allowed to be used in firebase names
-            fileName = fileName.replace(/\./g, 'p')
-          } else {
-            $('#fileNoGPSALert').show()
-          }
-        })
+              // Create filename for photo for storing/databasing
+              fileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude
+              // Convert all '.'s to 'p's because they aren't allowed to be used in firebase names
+              fileName = fileName.replace(/\./g, 'p')
+            } else {
+              $('#fileNoGPSALert').show()
+            }
+          })
+      } else {
+        $('#fileExtensionAlert').show()
+      }
     } else {
-      $('#fileExtensionAlert').show()
+      $('#noFileAlert').show()
     }
   }
 
@@ -75,6 +74,7 @@ $(document).ready(function () {
     $('#fileButton').val('')
     $('#fileNoGPSALert').hide()
     $('#fileExtensionAlert').hide()
+    $('#noFileAlert').hide()
     $('#uploadModal').modal('show')
     $('#aboutModal').modal('hide')
     $('#successfulUploadModal').modal('hide')
