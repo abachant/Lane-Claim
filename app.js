@@ -129,6 +129,15 @@ $(document).ready(function () {
     $('#aboutModal').modal('show')
   })
 
+  // Handle toggling reportListModal
+  // $('#reportListTab').click(function() {
+  //   $('#reportListModal').toggleClass('active');
+  // });
+
+  $('#reportListTab').click(function() {
+    $('#reportListModal').toggleClass('active');
+  });
+
   // Update leaflet markers from firebase in real time
   database.on('value', function(snapshot){
     incidentMarkers = snapshot.child('incidents/').val();
