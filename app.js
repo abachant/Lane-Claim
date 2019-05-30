@@ -129,11 +129,6 @@ $(document).ready(function () {
     $('#aboutModal').modal('show')
   })
 
-  // Handle toggling reportListModal
-  // $('#reportListTab').click(function() {
-  //   $('#reportListModal').toggleClass('active');
-  // });
-
   $('#reportListTab').click(function() {
     $('#reportListModal').toggleClass('active');
   });
@@ -143,14 +138,25 @@ $(document).ready(function () {
     incidentMarkers = snapshot.child('incidents/').val();
 
     for (var i = 0; i < Object.keys(incidentMarkers).length; i++) {
+
+      // Create table entry for each incident
+      $('#reportTable').append(
+        `<tr>
+          <td>${incidentMarkers[Object.keys(incidentMarkers)[i]].dateTime}</td>
+          <td>${incidentMarkers[Object.keys(incidentMarkers)[i]].latitude}, ${incidentMarkers[Object.keys(incidentMarkers)[i]].longitude}</td>
+          <td>${incidentMarkers[Object.keys(incidentMarkers)[i]].licensePlate}</td>
+          <td>${incidentMarkers[Object.keys(incidentMarkers)[i]].state}</td>
+        </tr>`)
+
+      // Create marker for each incident and add it to primaryMap
 			var marker = L.marker([incidentMarkers[Object.keys(incidentMarkers)[i]].latitude, incidentMarkers[Object.keys(incidentMarkers)[i]].longitude]).addTo(primaryMap);
-      // console.log(incidentMarkers[Object.keys(incidentMarkers)[i]].name)
+      // Create popup of associated info for each incident
       marker.bindPopup(
         `<div class="markerPopup">
-        <img src="${incidentMarkers[Object.keys(incidentMarkers)[i]].imgDownloadURL}" alt="Photo of parking incident" class="markerIncidentPhoto">
-        <p>License Plate: ${incidentMarkers[Object.keys(incidentMarkers)[i]].licensePlate}</p>
-        <p>License State: ${incidentMarkers[Object.keys(incidentMarkers)[i]].state}</p>
-        <p>Comment: ${incidentMarkers[Object.keys(incidentMarkers)[i]].comment}</p>
+          <img src="${incidentMarkers[Object.keys(incidentMarkers)[i]].imgDownloadURL}" alt="Photo of parking incident" class="markerIncidentPhoto">
+          <p>License Plate: ${incidentMarkers[Object.keys(incidentMarkers)[i]].licensePlate}</p>
+          <p>License State: ${incidentMarkers[Object.keys(incidentMarkers)[i]].state}</p>
+          <p>Comment: ${incidentMarkers[Object.keys(incidentMarkers)[i]].comment}</p>
         </div>`
       )
 		}
