@@ -6,7 +6,8 @@
   "dependencies": {
     "eslint-config": "^0.3.0",
     "eslint-config-rallycoding": "^3.2.0",
-    "exif-js": "^2.3.0"
+    "exif-js": "^2.3.0",
+    "jquery-resizable-dom": "^0.32.0"
   },
   "devDependencies": {
     "eslint": "^5.7.0",

@@ -129,9 +129,35 @@ $(document).ready(function () {
     $('#aboutModal').modal('show')
   })
 
-  $('#reportListTab').click(function() {
-    $('#reportListModal').toggleClass('active');
-  });
+  // $('#primaryMap').resizable({
+  //   handleSelector: '#reportListTab',
+  //   resizeWidth: false
+  // })
+
+
+  $('#primaryMap').resizable({
+    handleSelector: '#reportListTab',
+    resizeWidth: false
+  })
+
+  // $('#reportListTab').click(function() {
+  //   $('#reportListModal').toggleClass('active');
+  //   $('#primaryMap').height($(window).height() - $('#reportListModal').outerHeight() - $('#primaryNavBar').outerHeight() + $('#reportListTab').position().top);
+  // });
+
+  // $('#reportListTab').draggable({
+  //   axis: 'y'
+  // });
+  // $('#reportListTab').mousedown(function() {
+  //   $('#primaryMap').height($('#reportListTab').position().top - $('#primaryNavBar').outerHeight())
+  //   // $('#reportListModal').css({'top': ($('#reportListTab').position().top - $('#reportListTab').outerHeight()) + 'px'})
+  //   console.log($('#reportListModal').position().top);
+  //
+  // });
+  // console.log($('#reportListTab').position().top);
+  // console.log($('#primaryNavBar').outerHeight());
+  // console.log($('#reportListModal').position().top);
+
 
   // Update leaflet markers from firebase in real time
   database.on('value', function(snapshot){
