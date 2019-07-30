@@ -1,3 +1,10 @@
+#primaryMap {
+  padding: 10px;
+  height: calc(100vh - 56px);
+  background: #838383;
+  color: white;
+}
+
 #confirmMap {
   height: 200px;
 }
@@ -22,38 +29,10 @@
   width: 200px;
 }
 
-.panel-container-vertical {
-  display: flex;
-  flex-direction: column;
-  height: 500px;
-  border: 1px solid silver;
-  overflow: hidden;
-}
-
-#primaryMap {
-  flex: 0 0 auto;
-  /* only manually resize */
+#reportListContainer {
   padding: 10px;
-  height: 150px;
-  width: 100%;
-  white-space: nowrap;
-  background: #838383;
-  color: white;
-}
-
-#reportListTab {
-  flex: 0 0 auto;
-  height: 18px;
-  background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/hsizegrip.png) center center no-repeat #535353;
-  cursor: row-resize;
-}
-
-#reportListModal {
-  flex: 1 1 auto;
-  /* resizable */
-  padding: 10px;
-  min-height: 200px;
-  background: #eee;
+  height: calc(100vh - 56px);
+  width: auto;
 }
 
 /*# sourceMappingURL=styles.css.map */
