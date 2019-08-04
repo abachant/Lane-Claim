@@ -97,7 +97,7 @@ $(document).ready(function () {
       storage.child(`${fileName}`).put(file)
       storage.child(`${fileName}`).getDownloadURL().then(function(url) {
         // `url` is the download URL for 'storage.child(fileName).jpg'
-        downloadURL = url
+        var downloadURL = url
         incidentsRef.child(`${fileName}`).set({
           name: fileName,
           imgDownloadURL: downloadURL,
@@ -132,8 +132,16 @@ $(document).ready(function () {
   // Update leaflet markers from firebase in real time
   database.on('value', function(snapshot){
     incidentMarkers = snapshot.child('incidents/').val();
+    $('#reportTable').html(
+      `<tr>
+        <th>Datetime</th>
+        <th>Location</th>
+        <th>License Plate</th>
+        <th>State</th>
+      </tr>`)
 
     for (var i = 0; i < Object.keys(incidentMarkers).length; i++) {
+      console.log(Object.keys(incidentMarkers)[i])
 
       // Create table entry for each incident
       $('#reportTable').append(

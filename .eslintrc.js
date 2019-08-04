@@ -5,6 +5,12 @@ module.exports = {
         "commonjs": true,
         "es6": true,
         "jquery": true,
-        "jest": true
+        "jest": true,
+    },
+    "globals": {
+      "EXIF": false,
+      "fileName": false,
+      "parseDMS": false,
+      "isFileExtensionJpeg": false
     }
 };
