@@ -1,3 +1,4 @@
+/* elements */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +11,27 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* classes */
+
+.App {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.map {
+  height: 100%;
+
+}
+
+.navbar {
+  flex: none;
+}
+
+/* ids */
+
+#map-container {
+  flex: 1 1 auto;
 }
