@@ -1,5 +1,6 @@
 import React from 'react';
-import About from './About'
+import About from './About';
+import NewClaim from './NewClaim';
 
 function NavBar() {
   return (
@@ -7,7 +8,7 @@ function NavBar() {
         <div className="navbar-brand">Lane Claim</div>
         <div>
             <About />
-            <button className="btn btn-success" type="button">Submit New Claim</button>
+            <NewClaim />
         </div>
     </nav>
   );
