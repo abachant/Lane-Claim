@@ -1,11 +1,10 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import NewClaim from './NewClaim';
 
 function About(props) {
     const showAboutModal = props.showAboutModal;
-    
+
     const toggleAboutModal = props.toggleAboutModal;
     const toggleUploadModal = props.toggleUploadModal;
 

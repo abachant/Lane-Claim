@@ -1,16 +1,26 @@
 module.exports = {
-    "extends": "eslint:recommended",
     "env": {
         "browser": true,
-        "commonjs": true,
-        "es6": true,
-        "jquery": true,
-        "jest": true,
+        "es6": true
     },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
     "globals": {
-      "EXIF": false,
-      "fileName": false,
-      "parseDMS": false,
-      "isFileExtensionJpeg": false
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 11,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
     }
 };
