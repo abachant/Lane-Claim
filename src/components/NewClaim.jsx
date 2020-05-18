@@ -2,35 +2,23 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-function NewClaim() {
-    const [showUploadModal, setUploadModal] = useState(false);
-    const [showConfirmationModal, setConfirmationModal] = useState(false);
-    const [showSuccessModal, setSuccessModal] = useState(false);
-    
-    const hideUploadModal = () => setUploadModal(false);
-    const openUploadModal = () => setUploadModal(true);
-    const hideConfirmationModal = () => setConfirmationModal(false);
-    const openConfirmationModal = () => setConfirmationModal(true);
-    const hideSuccessModal = () => setSuccessModal(false);
-    const openSuccessModal = () => setSuccessModal(true);
 
-    // const [activeModals, setActiveModals] = useState({"upload-modal": false, "confirmation-modal": false, "success-modal": false})
+function NewClaim(props) {
+    const showUploadModal = props.showUploadModal;
+    const showConfirmationModal = props.showConfirmationModal;
+    const showSuccessModal = props.showSuccessModal;
 
-    // const toggleModal = (x) => {setUploadModal(x)};
-    // const foo = (modal, value) => {
-    //     const s = {...activeModals};
-    //     s[modal] = value;
-    //     setActiveModals(s);
-    // }
-
+    const toggleUploadModal = props.toggleUploadModal;
+    const toggleConfirmationModal = props.toggleConfirmationModal;
+    const toggleSuccessModal = props.toggleSuccessModal;
 
     return (
         <>
-            <Button variant="success" onClick={openUploadModal}>
+            <Button variant="success" onClick={() => {toggleUploadModal(true);}}>
                 Submit New Claim
             </Button>
 
-            <Modal show={showUploadModal} onHide={hideUploadModal} id="upload-modal" animation={false}>
+            <Modal show={showUploadModal} onHide={() => toggleUploadModal(false)} id="upload-modal" animation={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Submit New Claim</Modal.Title>
                 </Modal.Header>
@@ -42,16 +30,16 @@ function NewClaim() {
                     <p>File does not contain GPS metadata</p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={hideUploadModal}>
+                    <Button variant="secondary" onClick={() => toggleUploadModal(false)}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() =>{hideUploadModal(); openConfirmationModal();}}>
+                    <Button variant="primary" onClick={() => {toggleUploadModal(false); toggleConfirmationModal(true);}}>
                         Next
                     </Button>
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={showConfirmationModal} onHide={hideConfirmationModal} id="confirmation-modal" animation={false}>
+            <Modal show={showConfirmationModal} onHide={() => toggleConfirmationModal(false)} id="confirmation-modal" animation={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Details</Modal.Title>
                 </Modal.Header>
@@ -119,26 +107,26 @@ function NewClaim() {
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => {hideConfirmationModal(); openUploadModal();}}>
+                    <Button variant="secondary" onClick={() => {toggleConfirmationModal(false); toggleUploadModal(true);}}>
                         Back
                     </Button>
-                    <Button variant="primary" onClick={() => {hideConfirmationModal(); openSuccessModal()}}>
+                    <Button variant="primary" onClick={() => {toggleConfirmationModal(false); toggleSuccessModal(true)}}>
                         Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={showSuccessModal} onHide={hideSuccessModal} id="success-modal" animation={false}>
+            <Modal show={showSuccessModal} onHide={() => toggleSuccessModal(false)} id="success-modal" animation={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Upload Successful!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="success" onClick={() => {hideSuccessModal(); openUploadModal();}}>
+                    <Button variant="success" onClick={() => {toggleSuccessModal(false); toggleUploadModal(true);}}>
                         Submit Another Claim
                     </Button>
-                    <Button variant="primary" onClick={hideSuccessModal}>
+                    <Button variant="primary" onClick={() => toggleSuccessModal(false)}>
                         Exit to Map
                     </Button>
                 </Modal.Footer>

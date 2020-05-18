@@ -23,7 +23,11 @@ code {
 
 .map {
   height: 100%;
+}
 
+.map-container {
+  flex: 1 1 auto;
+  padding: 0;
 }
 
 .navbar {
@@ -34,4 +38,5 @@ code {
 
 #map-container {
   flex: 1 1 auto;
+  padding: 0;
 }
