@@ -12,23 +12,14 @@ function App(props) {
   let incidentMarkers;
 
   const [markerList, setMarkerList] = useState([
-    {name:"test1", latitude: 2.31123, longitude:35.2322, key:0},
-    {name:"test2", latitude: 24.31123, longitude:34.2322, key:1},
-    {name:"test3", latitude: 22.31123, longitude:38.2322, key:2},
   ]);
 
-  // useEffect(() => {
-  //   database.on('value', function(snapshot){
-  //     incidentMarkers = snapshot.child('incidents/').val();
-  //     // console.log(incidentMarkers)
-  //     for (var i = 0; i < Object.keys(incidentMarkers).length; i++) {
-  //       console.log(incidentMarkers[Object.keys(incidentMarkers)[i]])
-  //       let incident = incidentMarkers[Object.keys(incidentMarkers)[i]];
-  //       console.log(incident.name)
-
-  //     }
-  //   });
-  // });
+  useEffect(() => {
+    database.on('value', function(snapshot){
+      incidentMarkers = snapshot.child('incidents/').val();
+      setMarkerList(Object.values(incidentMarkers).map((item) => item))
+      })
+    }, []);
 
   return (
     <div className="App">
@@ -39,7 +30,19 @@ function App(props) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
         />
-        {markerList.map(item => (<Marker key={item.key} position={[item.latitude, item.longitude]}></Marker>))}
+
+        {markerList.map(item => (
+          <Marker key={item.key} position={[item.latitude, item.longitude]}>
+            <Popup>
+              <div className="marker-popup">
+                <img src={item.imgDownloadURL} alt="Photo of parking incident" className="marker-popup-photo"/>
+                <p>License Plate: {item.licensePlate}</p>
+                <p>License State: {item.state}</p>
+                <p>Comment: {item.comment}</p>
+              </div>
+            </Popup>
+          </Marker>)
+        )}
       </Map>
       </div>
     </div>

@@ -30,6 +30,11 @@ code {
   padding: 0;
 }
 
+.marker-popup-photo {
+  height: auto;
+  width: 100%;
+}
+
 .navbar {
   flex: none;
 }
