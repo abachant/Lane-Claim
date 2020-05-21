@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import EXIF from 'exif-js';
+import * as utils from '../utils';
 
 
 function NewClaim(props) {
+    const [file, setFile] = useState();
+    const [fileName, setFileName] = useState();
+    
     const showUploadModal = props.showUploadModal;
     const showConfirmationModal = props.showConfirmationModal;
     const showSuccessModal = props.showSuccessModal;
@@ -11,6 +16,101 @@ function NewClaim(props) {
     const toggleUploadModal = props.toggleUploadModal;
     const toggleConfirmationModal = props.toggleConfirmationModal;
     const toggleSuccessModal = props.toggleSuccessModal;
+
+    const incidentsRef = props.incidentsRef;
+    const storage = props.storage;
+    let inputFile;
+
+    /**
+    * Retrieve latitude, longitude, and datetime of photo from its exif data
+    */
+    function getExif (file, callback) {
+        EXIF.getData(file, function () {
+        var allMetaData = EXIF.getAllTags(this)
+        var gpsInfo = utils.parseDMS(allMetaData)
+        var exifInfo = false
+        if (gpsInfo) {
+            exifInfo = {
+            latitude: gpsInfo.Latitude,
+            longitude: gpsInfo.Longitude,
+            dateTime: allMetaData.DateTime
+            }
+        }
+
+        callback(exifInfo)
+        })
+    }
+
+    /**
+    * Validate that the file is acceptable before proceeding to next modal
+    */
+    function validateFile () {
+        let fileInput = document.getElementById('file-input')
+        inputFile = fileInput.files[0]
+        // Make sure file is not empty
+        if (inputFile !== undefined){
+            setFile(inputFile);
+            EXIF.getData(inputFile);
+            // Make sure file is a Jpeg
+            if (utils.isFileExtensionJpeg(inputFile)) {
+                getExif(inputFile, function (exifData) {
+                    // Make sure file has exif data before proceeding
+                    if (exifData) {
+                        inputFile.dateTime = exifData.dateTime
+                        inputFile.latitude = exifData.latitude
+                        inputFile.longitude = exifData.longitude
+                        console.log('we gots dat exif dat')
+                        // Add temporary marker to confirmMap Modal
+
+                        // Create filename for photo for storing/databasing by combining dateTime with gps position
+                        let inputFileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude
+                        // Convert all '.'s to 'p's because they aren't allowed to be used in firebase names
+                        inputFileName = inputFileName.replace(/\./g, 'p')
+                        setFileName(inputFileName);
+                    }
+                })
+                // Proceed to Confirmation Modal
+                toggleUploadModal(false)
+                toggleConfirmationModal(true)
+
+            } else {
+                // File is not a Jpeg warning
+            }
+        } else {
+            // File is empty warning 
+        }
+    }
+
+    /**
+    Upload incident to firebase 
+    */
+    function uploadToFirebase() {
+        if (typeof file !== 'undefined') {
+            storage.child(fileName).put(file)
+            storage.child(fileName).getDownloadURL().then(function(url) {
+              // `url` is the download URL for 'storage.child(fileName).jpg'
+              var downloadURL = url
+              incidentsRef.child(fileName).set({
+                name: fileName,
+                imgDownloadURL: downloadURL,
+                dateTime: file.dateTime,
+                latitude: file.latitude,
+                longitude: file.longitude,
+                licensePlate: document.getElementById('license-plate').value,
+                state: document.getElementById('state-selector').value,
+                comment: document.getElementById('picture-comment').value
+              })
+              // Proceed to Success Modal
+              toggleConfirmationModal(false); 
+              toggleSuccessModal(true);
+
+            }).catch(function(error) {
+              console.error(error)
+            })
+          } else {
+              console.log(inputFile)
+          }
+    }
 
     return (
         <>
@@ -23,9 +123,8 @@ function NewClaim(props) {
                     <Modal.Title>Submit New Claim</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h6>Upload an image of a vehicle obstructing a bike lane</h6>
+                    <h6>Upload a photo of a vehicle obstructing a bike lane</h6>
                     <input type="file" name="claim-file" id="file-input" accept="image/.jpeg" />
-                    <p>Please choose a photo</p>
                     <p>File must be a jpeg</p>
                     <p>File does not contain GPS metadata</p>
                 </Modal.Body>
@@ -33,7 +132,7 @@ function NewClaim(props) {
                     <Button variant="secondary" onClick={() => toggleUploadModal(false)}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => {toggleUploadModal(false); toggleConfirmationModal(true);}}>
+                    <Button variant="primary" onClick={() => validateFile()}>
                         Next
                     </Button>
                 </Modal.Footer>
@@ -46,7 +145,7 @@ function NewClaim(props) {
                 <Modal.Body>
                     <form>
                         License Plate:<br />
-                        <input type="text" id="licensePlate" /><br />
+                        <input type="text" id="license-plate" /><br />
                         <label htmlFor="state-selector">License State:</label>
                         <select className="form-control" id="state-selector">
                             <option value="N/A">N/A</option>
@@ -110,7 +209,7 @@ function NewClaim(props) {
                     <Button variant="secondary" onClick={() => {toggleConfirmationModal(false); toggleUploadModal(true);}}>
                         Back
                     </Button>
-                    <Button variant="primary" onClick={() => {toggleConfirmationModal(false); toggleSuccessModal(true)}}>
+                    <Button variant="primary" onClick={() => {uploadToFirebase()}}>
                         Confirm
                     </Button>
                 </Modal.Footer>

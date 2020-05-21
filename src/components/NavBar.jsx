@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import About from './About';
 import NewClaim from './NewClaim';
 
-function NavBar() {
+function NavBar(props) {
   const [showAboutModal, setAboutModal] = useState(false);
   const [showUploadModal, setUploadModal] = useState(false);
   const [showConfirmationModal, setConfirmationModal] = useState(false);
@@ -32,6 +32,8 @@ function NavBar() {
               toggleUploadModal={toggleUploadModal}
             />
             <NewClaim 
+              incidentsRef={props.incidentsRef} 
+              storage={props.storage}
               showUploadModal={showUploadModal}
               showConfirmationModal={showConfirmationModal}
               showSuccessModal={showSuccessModal}

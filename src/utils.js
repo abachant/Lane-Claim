@@ -41,7 +41,7 @@ function isFileExtensionJpeg (file) {
   }
 }
 
-module.exports = {
+export {
   parseDMS,
   convertDMSToDD,
   isFileExtensionJpeg
