@@ -25,11 +25,6 @@ code {
   height: 100%;
 }
 
-.map-container {
-  flex: 1 1 auto;
-  padding: 0;
-}
-
 .marker-popup-photo {
   height: auto;
   width: 100%;
@@ -44,4 +39,5 @@ code {
 #map-container {
   flex: 1 1 auto;
   padding: 0;
+  height: 100%;
 }

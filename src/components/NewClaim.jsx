@@ -59,7 +59,6 @@ function NewClaim(props) {
                         inputFile.dateTime = exifData.dateTime
                         inputFile.latitude = exifData.latitude
                         inputFile.longitude = exifData.longitude
-                        console.log('we gots dat exif dat')
                         // Add temporary marker to confirmMap Modal
 
                         // Create filename for photo for storing/databasing by combining dateTime with gps position
@@ -75,6 +74,7 @@ function NewClaim(props) {
 
             } else {
                 // File is not a Jpeg warning
+                alert('fuckkk')
             }
         } else {
             // File is empty warning 
