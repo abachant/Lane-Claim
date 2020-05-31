@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import EXIF from 'exif-js';
 import * as utils from '../utils';
 
@@ -74,10 +75,11 @@ function NewClaim(props) {
 
             } else {
                 // File is not a Jpeg warning
-                alert('fuckkk')
+                alert('oh no not a jpge is youjjr file')
             }
         } else {
             // File is empty warning 
+            alert('bro you file is EMPTUTRY!!!!!')
         }
     }
 
@@ -138,11 +140,19 @@ function NewClaim(props) {
                 </Modal.Footer>
             </Modal>
 
+            {/* Modal for confirming submission details */}
             <Modal show={showConfirmationModal} onHide={() => toggleConfirmationModal(false)} id="confirmation-modal" animation={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                <Map id="confirmation-map" className="map" center={[39.8283, -98.5795]} zoom={5}>
+                    <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                    />
+                    {/* <Marker key={file.key} position={[file.latitude, file.longitude]}><Popup>test</Popup></Marker> */}
+                </Map>
                     <form>
                         License Plate:<br />
                         <input type="text" id="license-plate" /><br />

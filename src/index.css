@@ -41,3 +41,8 @@ code {
   padding: 0;
   height: 100%;
 }
+
+#confirmation-map {
+  height: 400px;
+  width: 100%;
+}
