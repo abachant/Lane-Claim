@@ -232,10 +232,10 @@ function NewClaim(props) {
                 <Modal.Body>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="success" onClick={() => {toggleSuccessModal(false); toggleUploadModal(true);}}>
+                    <Button variant="success" onClick={() => {toggleSuccessModal(false); toggleUploadModal(true); setFile(); setFileName()}}>
                         Submit Another Claim
                     </Button>
-                    <Button variant="primary" onClick={() => toggleSuccessModal(false)}>
+                    <Button variant="primary" onClick={() => {toggleSuccessModal(false); setFile(); setFileName()}}>
                         Exit to Map
                     </Button>
                 </Modal.Footer>
