@@ -64,22 +64,27 @@ function NewClaim(props) {
 
                         // Create filename for photo for storing/databasing by combining dateTime with gps position
                         let inputFileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude
+                        
                         // Convert all '.'s to 'p's because they aren't allowed to be used in firebase names
                         inputFileName = inputFileName.replace(/\./g, 'p')
                         setFileName(inputFileName);
+
+                        // Proceed to Confirmation Modal
+                        toggleUploadModal(false)
+                        toggleConfirmationModal(true)
+                    } else {
+                        // File does not contain any exif data warning
+                        alert('File is missing exif data')
                     }
                 })
-                // Proceed to Confirmation Modal
-                toggleUploadModal(false)
-                toggleConfirmationModal(true)
 
             } else {
                 // File is not a Jpeg warning
-                alert('oh no not a jpge is youjjr file')
+                alert('File is not a Jpeg')
             }
         } else {
             // File is empty warning 
-            alert('bro you file is EMPTUTRY!!!!!')
+            alert('Please select a Jpeg with exif data')
         }
     }
 
@@ -232,10 +237,10 @@ function NewClaim(props) {
                 <Modal.Body>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="success" onClick={() => {toggleSuccessModal(false); toggleUploadModal(true); setFile(); setFileName()}}>
+                    <Button variant="success" onClick={() => {toggleSuccessModal(false); toggleUploadModal(true)}}>
                         Submit Another Claim
                     </Button>
-                    <Button variant="primary" onClick={() => {toggleSuccessModal(false); setFile(); setFileName()}}>
+                    <Button variant="primary" onClick={() => toggleSuccessModal(false)}>
                         Exit to Map
                     </Button>
                 </Modal.Footer>

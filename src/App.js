@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from './components/NavBar';
 import ReportTable from './components/ReportTable';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Map, Circle, Popup, TileLayer } from 'react-leaflet';
 import * as firebase from 'firebase';
 import './index.css';
 
@@ -34,7 +34,7 @@ function App() {
 
             {/* Create Marker for each incident in State */}
             {markerList.map(item => (
-              <Marker key={item.key} position={[item.latitude, item.longitude]}>
+              <Circle key={item.name} center={[item.latitude, item.longitude]} radius={8} className="marker">
                 <Popup>
                   <div className="marker-popup">
                     <img src={item.imgDownloadURL} alt="Photo of parking incident" className="marker-popup-photo"/>
@@ -43,7 +43,7 @@ function App() {
                     <p>Comment: {item.comment}</p>
                   </div>
                 </Popup>
-              </Marker>)
+              </Circle>)
             )}
           </Map>
         </div>
