@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Map, Marker, TileLayer } from 'react-leaflet';
 import EXIF from 'exif-js';
 import * as utils from '../utils';
 
@@ -9,6 +9,7 @@ import * as utils from '../utils';
 function NewClaim(props) {
     const [file, setFile] = useState();
     const [fileName, setFileName] = useState();
+    const [confirmationMarker, setConfirmationMarker] = useState();
     
     const showUploadModal = props.showUploadModal;
     const showConfirmationModal = props.showConfirmationModal;
@@ -61,7 +62,7 @@ function NewClaim(props) {
                         inputFile.latitude = exifData.latitude
                         inputFile.longitude = exifData.longitude
                         // Add temporary marker to confirmMap Modal
-
+                        setConfirmationMarker([inputFile.latitude, inputFile.longitude])
                         // Create filename for photo for storing/databasing by combining dateTime with gps position
                         let inputFileName = exifData.dateTime.split(' ')[0] + '_' + exifData.dateTime.split(' ')[1] + '_' + exifData.latitude + '_' + exifData.longitude
                         
@@ -151,12 +152,12 @@ function NewClaim(props) {
                     <Modal.Title>Confirm Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <Map id="confirmation-map" className="map" center={[39.8283, -98.5795]} zoom={5}>
+                <Map id="confirmation-map" className="map" center={confirmationMarker} zoom={17}>
                     <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                     />
-                    {/* <Marker key={file.key} position={[file.latitude, file.longitude]}><Popup>test</Popup></Marker> */}
+                    <Marker position={confirmationMarker}></Marker>
                 </Map>
                     <form>
                         License Plate:<br />

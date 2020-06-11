@@ -37,7 +37,7 @@ function App() {
               <Circle key={item.name} center={[item.latitude, item.longitude]} radius={8} className="marker">
                 <Popup>
                   <div className="marker-popup">
-                    <img src={item.imgDownloadURL} alt="Photo of parking incident" className="marker-popup-photo"/>
+                    <img src={item.imgDownloadURL} alt="bike lane obstruction incident" className="marker-popup-photo img-thumbnail"/>
                     <p>License Plate: {item.licensePlate}</p>
                     <p>License State: {item.state}</p>
                     <p>Comment: {item.comment}</p>
