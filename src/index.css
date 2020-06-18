@@ -34,6 +34,10 @@ code {
   flex: none;
 }
 
+.popup-table {
+  margin-bottom: 0;
+}
+
 /* ids */
 
 #map-container {

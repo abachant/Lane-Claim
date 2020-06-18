@@ -38,9 +38,45 @@ function App() {
                 <Popup>
                   <div className="marker-popup">
                     <img src={item.imgDownloadURL} alt="bike lane obstruction incident" className="marker-popup-photo img-thumbnail"/>
-                    <p>License Plate: {item.licensePlate}</p>
-                    <p>License State: {item.state}</p>
-                    <p>Comment: {item.comment}</p>
+                    {/* <p>License Plate: {item.licensePlate}</p>
+                    <p>License State: {item.state}</p> */}
+                    <table className="table table-sm table-bordered popup-table" >
+                      <thead>
+                        <tr>
+                          <th colSpan="2">License</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{item.licensePlate}</td>
+                          <td>{item.state}</td>
+                        </tr>
+                      </tbody> 
+                    </table>
+                    <table className="table table-sm table-bordered popup-table">
+                      <thead>
+                        <tr>
+                          <th>Location</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Taylor St. Waltham, MA</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table className="table table-sm table-bordered popup-table">
+                      <thead>
+                        <tr>
+                          <th>Comment</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{item.comment}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </Popup>
               </Circle>)
