@@ -4,12 +4,15 @@ import Button from 'react-bootstrap/Button';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import EXIF from 'exif-js';
 import * as utils from '../utils';
+import REACT_APP_MAPQUEST_API_KEY from './temporary_key.jsx'
 
+const axios = require('axios');
 
 function NewClaim(props) {
     const [file, setFile] = useState();
     const [fileName, setFileName] = useState();
     const [confirmationMarker, setConfirmationMarker] = useState();
+    const [location, setLocation] = useState();
     
     const showUploadModal = props.showUploadModal;
     const showConfirmationModal = props.showConfirmationModal;
@@ -44,6 +47,24 @@ function NewClaim(props) {
     }
 
     /**
+    * Perform axios GET call to mapquest reversegeocode api to convert [Lat,Long] to Street Address
+    */
+    const getLocation = async (key, position) => {
+        try {
+          let response = await axios.get(`http://www.mapquestapi.com/geocoding/v1/reverse?key=${key}&location=${position}`);
+          response = response.data.results[0].locations[0];
+          
+          // Get street name without specific address by removing first substring
+          const formattedStreet = response.street.split(" ").slice(1).join(" ")
+
+          const location = `${formattedStreet}, ${response.adminArea5}, ${response.adminArea3} ${response.postalCode}`
+          setLocation(location)
+        } catch (error) {
+          console.error(error);
+        }
+      } 
+
+    /**
     * Validate that the file is acceptable before proceeding to next modal
     */
     function validateFile () {
@@ -69,6 +90,9 @@ function NewClaim(props) {
                         // Convert all '.'s to 'p's because they aren't allowed to be used in firebase names
                         inputFileName = inputFileName.replace(/\./g, 'p')
                         setFileName(inputFileName);
+
+                        // Get street address of marker
+                        getLocation(REACT_APP_MAPQUEST_API_KEY,[exifData.latitude, exifData.longitude])
 
                         // Proceed to Confirmation Modal
                         toggleUploadModal(false)
@@ -104,6 +128,7 @@ function NewClaim(props) {
                 dateTime: file.dateTime,
                 latitude: file.latitude,
                 longitude: file.longitude,
+                location: location,
                 licensePlate: document.getElementById('license-plate').value,
                 state: document.getElementById('state-selector').value,
                 comment: document.getElementById('picture-comment').value
@@ -133,8 +158,7 @@ function NewClaim(props) {
                 <Modal.Body>
                     <h6>Upload a photo of a vehicle obstructing a bike lane</h6>
                     <input type="file" name="claim-file" id="file-input" accept="image/.jpeg" />
-                    <p>File must be a jpeg</p>
-                    <p>File does not contain GPS metadata</p>
+                    <p>File must be a jpeg with exif data</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => toggleUploadModal(false)}>

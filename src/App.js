@@ -38,8 +38,6 @@ function App() {
                 <Popup>
                   <div className="marker-popup">
                     <img src={item.imgDownloadURL} alt="bike lane obstruction incident" className="marker-popup-photo img-thumbnail"/>
-                    {/* <p>License Plate: {item.licensePlate}</p>
-                    <p>License State: {item.state}</p> */}
                     <table className="table table-sm table-bordered popup-table" >
                       <thead>
                         <tr>

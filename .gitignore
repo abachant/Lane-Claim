@@ -7,6 +7,11 @@ dist
 
 # testing
 /coverage
+/.env
+.env
+./temporary_key.jsx
+.temporary_key.jsx
+src/components/temporary_key.jsx
 
 # production
 /build
