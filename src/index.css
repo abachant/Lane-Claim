@@ -23,6 +23,9 @@ code {
 
 .map {
   height: 100%;
+  /* width: 100vw; */
+  margin: 0;
+  padding: 0;
 }
 
 .marker-popup-photo {
@@ -39,14 +42,13 @@ code {
 }
 
 /* ids */
+#confirmation-map {
+  height: 400px;
+  width: 100%;
+}
 
 #map-container {
   flex: 1 1 auto;
   padding: 0;
   height: 100%;
-}
-
-#confirmation-map {
-  height: 400px;
-  width: 100%;
 }

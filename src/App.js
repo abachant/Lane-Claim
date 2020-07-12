@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from './components/NavBar';
 import ReportTable from './components/ReportTable';
-import { Map, Circle, Popup, TileLayer } from 'react-leaflet';
+import { Map, Circle, Popup, TileLayer} from 'react-leaflet';
+import L from 'leaflet';
+import Collapse from 'react-bootstrap/Collapse'
 import * as firebase from 'firebase';
 import './index.css';
 
@@ -12,6 +14,7 @@ function App() {
   let incidentMarkers;
 
   const [markerList, setMarkerList] = useState([ ]);
+  const [toggleReportTable, setToggleReportTable] = useState(true);
 
   useEffect(() => {
     // Add each database entry from firebase to State
@@ -31,6 +34,7 @@ function App() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
             />
+            {/* <button className="btn btn-primary" data-toggle="collapse" data-target="#report-table-container">blumbpf</button> */}
 
             {/* Create Marker for each incident in State */}
             {markerList.map(item => (
@@ -59,7 +63,7 @@ function App() {
                       </thead>
                       <tbody>
                         <tr>
-                          <td>Taylor St. Waltham, MA</td>
+                          <td>{item.location}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -81,7 +85,12 @@ function App() {
             )}
           </Map>
         </div>
-        <ReportTable markerList={markerList}/>
+        <button className="btn btn-primary" onClick={() => setToggleReportTable(!toggleReportTable)} aria-controls="report-table-container" arai-expanded="toggleReportTable">Table</button>
+        <Collapse in={toggleReportTable}>
+          <div id="report-table-container" className="col-md-4 hidden-xs">
+            <ReportTable markerList={markerList}/>  
+          </div> 
+        </Collapse>
       </div>
     </div>
   );
