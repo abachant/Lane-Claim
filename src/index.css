@@ -45,10 +45,22 @@ code {
 #confirmation-map {
   height: 400px;
   width: 100%;
+  z-index: -1;
 }
 
 #map-container {
   flex: 1 1 auto;
   padding: 0;
   height: 100%;
+}
+
+#report-table-button{
+  padding:0;
+  position: absolute;
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  z-index: 10000;
+  right: 0;
+  margin: 7px;
 }
