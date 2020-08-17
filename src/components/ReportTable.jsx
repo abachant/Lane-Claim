@@ -18,27 +18,30 @@ function ReportTable(props) {
         return datetimeString
     }
     return (
-        <table className="table">
-            <thead>
-                <tr>
-                    <th>Datetime</th>
-                    <th>Location</th>
-                    <th>License Plate</th>
-                    <th>License State</th>
-                </tr>
-            </thead>
-            <tbody>
-                {/* Create table entry for each incident in State */}
-                {markerList.map(item => (
-                    <tr key={item.name}>
-                        <td>{formatDateTime(item.dateTime)}</td>
-                        <td>{item.location}</td>
-                        <td>{item.licensePlate}</td>
-                        <td>{item.state}</td>
+        <div id="report-table">
+            <table  className="table">
+                <thead>
+                    <tr>
+                        <th>Datetime</th>
+                        <th>Location</th>
+                        <th>License Plate</th>
+                        <th>License State</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {/* Create table entry for each incident in State */}
+                    {markerList.map(item => (
+                        <tr key={item.name}>
+                            <td>{formatDateTime(item.dateTime)}</td>
+                            <td>{item.location}</td>
+                            <td>{item.licensePlate}</td>
+                            <td>{item.state}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>   
+        </div>
+        
     );
 }
 
