@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import NavBar from './components/NavBar';
 import ReportTable from './components/ReportTable';
 import { Map, Circle, Popup, TileLayer} from 'react-leaflet';
 import * as firebase from 'firebase';
 import './index.css';
+import { map } from 'leaflet';
 
 function App() {
   const database = firebase.database().ref();
@@ -17,20 +18,29 @@ function App() {
   let toggleSign;
   toggleReportTable? toggleSign="－":toggleSign="＋";
 
+  const mapRef = useRef();
+
   useEffect(() => {
+    // Access instance of leaflet Map Element to directly interface with Leaflet API 
+    const { current = {} } = mapRef
+    const { leafletElement: mapInstance } = current;
+
+    //Geolocate user's position 
+    mapInstance.locate({setView: true, maxZoom: 16})
+
     // Add each database entry from firebase to State
     database.on('value', (snapshot) => {
       incidentMarkers = snapshot.child('incidents/').val();
       setMarkerList(Object.values(incidentMarkers).map((item) => item))
       });
-    }, []);
+    }, [mapRef]);
 
   return (
     <div className="App">
       <NavBar incidentsRef={incidentsRef} storage={storage}/>
       <div className="container-fluid row map">
         <div id="map-container">
-          <Map className="map" center={[39.8283, -98.5795]} zoom={5} >
+          <Map className="map" center={[39.8283, -98.5795]} ref={mapRef} zoom={5} >
             <div id="report-table-container" className="col-md-5 hidden-xs">
               {toggleReportTable? <ReportTable markerList={markerList}/>:""}
               <button id="report-table-button" className="btn btn-secondary" onClick={() => setToggleReportTable(!toggleReportTable)} aria-controls="report-table-container" aria-expanded={toggleReportTable}>{toggleSign}</button>
