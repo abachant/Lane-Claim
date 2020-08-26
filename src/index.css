@@ -22,10 +22,18 @@ code {
   flex-direction: column;
 }
 
+.leaflet-popup-content{
+  width: min-content !important;
+}
+
 .map {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+.marker-popup {
+  min-width: 375px;
 }
 
 .marker-popup-photo {

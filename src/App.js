@@ -16,7 +16,7 @@ function App() {
 
   let toggleSign;
   toggleReportTable? toggleSign="－":toggleSign="＋";
-  
+
   useEffect(() => {
     // Add each database entry from firebase to State
     database.on('value', (snapshot) => {
@@ -33,7 +33,7 @@ function App() {
           <Map className="map" center={[39.8283, -98.5795]} zoom={5} >
             <div id="report-table-container" className="col-md-5 hidden-xs">
               {toggleReportTable? <ReportTable markerList={markerList}/>:""}
-              <button id="report-table-button" className="btn btn-secondary" onClick={() => setToggleReportTable(!toggleReportTable)} aria-controls="report-table-container" aria-expanded="toggleReportTable">{toggleSign}</button>
+              <button id="report-table-button" className="btn btn-secondary" onClick={() => setToggleReportTable(!toggleReportTable)} aria-controls="report-table-container" aria-expanded={toggleReportTable}>{toggleSign}</button>
             </div>
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
