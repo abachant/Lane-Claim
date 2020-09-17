@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable } from 'react-table';
+import { useTable, useSortBy } from 'react-table';
 
 function ReportTable(props) {
 
@@ -40,7 +40,10 @@ function ReportTable(props) {
         headerGroups,
         rows,
         prepareRow,
-      } = useTable({ columns, data })
+      } = useTable(
+          { columns, data }, 
+          useSortBy
+          )
     
     // Convert timestamp from exif data to a more readable formatted Date object
     function formatDateTime(datetime){
@@ -62,13 +65,21 @@ function ReportTable(props) {
                     {headerGroups.map(headerGroup => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map(column => (
-                            <th {...column.getHeaderProps()}>
+                            <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                                 {column.render('Header')}
+                                <span>
+                                    {column.isSorted
+                                        ? column.isSortedDesc
+                                            ? ' 🔽'
+                                            : ' 🔼'
+                                        : ''}
+                                </span>
                             </th>
                             ))}
                         </tr>
                     ))}
                 </thead>
+
                 <tbody {...getTableBodyProps()}>
                 {rows.map(row => {
                     prepareRow(row)
