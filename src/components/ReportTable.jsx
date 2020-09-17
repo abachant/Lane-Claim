@@ -1,8 +1,46 @@
 import React from 'react';
+import { useTable } from 'react-table';
 
 function ReportTable(props) {
 
     const markerList = props.markerList;
+
+    // Get table data
+    const data = React.useMemo(
+        () => markerList,
+        [markerList]
+    )
+
+    // Define Columns
+    const columns = React.useMemo(
+        () => [
+            {
+                Header: "Datetime",
+                accessor: "dateTime",
+            },
+            {
+                Header: 'Location',
+                accessor: 'location',
+            },
+            {
+                Header: 'License Plate',
+                accessor: 'licensePlate',
+            },
+            {
+                Header: 'License State',
+                accessor: 'state',
+            }
+        ],
+        []
+    )
+   
+      const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        rows,
+        prepareRow,
+      } = useTable({ columns, data })
     
     // Convert timestamp from exif data to a more readable formatted Date object
     function formatDateTime(datetime){
@@ -19,7 +57,38 @@ function ReportTable(props) {
     }
     return (
         <div id="report-table">
-            <table  className="table">
+            <table className="table" {...getTableProps()}>
+                <thead>
+                    {headerGroups.map(headerGroup => (
+                        <tr {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map(column => (
+                            <th {...column.getHeaderProps()}>
+                                {column.render('Header')}
+                            </th>
+                            ))}
+                        </tr>
+                    ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                {rows.map(row => {
+                    prepareRow(row)
+                    return (
+                        <tr {...row.getRowProps()}>
+                            {row.cells.map(cell => {
+                                return (
+                                <td{...cell.getCellProps()}>
+                                    {cell.render('Cell')}
+                                </td>
+                                )
+                            })}
+                        </tr>
+                    )
+                })}
+                </tbody>
+            </table>
+
+
+            {/* <table {...getTableProps()} className="table">
                 <thead>
                     <tr>
                         <th>Datetime</th>
@@ -28,9 +97,9 @@ function ReportTable(props) {
                         <th>License State</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody> */}
                     {/* Create table entry for each incident in State */}
-                    {markerList.map(item => (
+                    {/* {markerList.map(item => (
                         <tr key={item.name}>
                             <td>{formatDateTime(item.dateTime)}</td>
                             <td>{item.location}</td>
@@ -39,7 +108,7 @@ function ReportTable(props) {
                         </tr>
                     ))}
                 </tbody>
-            </table>   
+            </table>    */}
         </div>
         
     );
