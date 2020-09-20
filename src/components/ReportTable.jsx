@@ -4,7 +4,10 @@ import { useTable, useSortBy } from 'react-table';
 function ReportTable(props) {
 
     const markerList = props.markerList;
-
+    
+    // Access instance of leaflet Map Element to directly interface with Leaflet API 
+    const { leafletElement: mapInstance } = props.mapRef.current;
+    
     // Get table data
     const data = React.useMemo(
         () => markerList,
@@ -65,8 +68,10 @@ function ReportTable(props) {
                     {headerGroups.map(headerGroup => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map(column => (
+                                // Add the sorting props to control sorting
                             <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                                 {column.render('Header')}
+                                {/* Add a sort direction indicator */}
                                 <span>
                                     {column.isSorted
                                         ? column.isSortedDesc
@@ -84,12 +89,12 @@ function ReportTable(props) {
                 {rows.map(row => {
                     prepareRow(row)
                     return (
-                        <tr {...row.getRowProps()}>
+                        <tr {...row.getRowProps()} onClick={() => mapInstance.setView([row.original.latitude, row.original.longitude], 18)}>
                             {row.cells.map(cell => {
                                 return (
-                                <td{...cell.getCellProps()}>
-                                    {cell.render('Cell')}
-                                </td>
+                                    <td{...cell.getCellProps()}>
+                                        {cell.render('Cell')}
+                                    </td>
                                 )
                             })}
                         </tr>

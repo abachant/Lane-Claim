@@ -24,7 +24,7 @@ function App() {
     // Access instance of leaflet Map Element to directly interface with Leaflet API 
     const { current = {} } = mapRef
     const { leafletElement: mapInstance } = current;
-
+ 
     //Geolocate user's position 
     mapInstance.locate({setView: true, maxZoom: 16})
 
@@ -42,7 +42,7 @@ function App() {
         <div id="map-container">
           <Map className="map" center={[39.8283, -98.5795]} ref={mapRef} zoom={5} >
             <div id="report-table-container" className="col-md-5 hidden-xs">
-              {toggleReportTable? <ReportTable markerList={markerList}/>:""}
+              {toggleReportTable? <ReportTable markerList={markerList} mapRef={mapRef}/>:""}
               <button id="report-table-button" className="btn btn-secondary" onClick={() => setToggleReportTable(!toggleReportTable)} aria-controls="report-table-container" aria-expanded={toggleReportTable}>{toggleSign}</button>
             </div>
             <TileLayer
