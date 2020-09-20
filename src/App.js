@@ -4,7 +4,6 @@ import ReportTable from './components/ReportTable';
 import { Map, Circle, Popup, TileLayer} from 'react-leaflet';
 import * as firebase from 'firebase';
 import './index.css';
-import { map } from 'leaflet';
 
 function App() {
   const database = firebase.database().ref();

@@ -49,6 +49,15 @@ code {
   margin-bottom: 0;
 }
 
+.table-row {
+  cursor: pointer;
+}
+
+.table-row:hover{
+  text-decoration: underline;
+  background-color: lightblue;
+}
+
 /* ids */
 #confirmation-map {
   height: 400px;

@@ -75,8 +75,8 @@ function ReportTable(props) {
                                 <span>
                                     {column.isSorted
                                         ? column.isSortedDesc
-                                            ? ' 🔽'
-                                            : ' 🔼'
+                                            ? ' ▼'
+                                            : ' ▲'
                                         : ''}
                                 </span>
                             </th>
@@ -89,10 +89,10 @@ function ReportTable(props) {
                 {rows.map(row => {
                     prepareRow(row)
                     return (
-                        <tr {...row.getRowProps()} onClick={() => mapInstance.setView([row.original.latitude, row.original.longitude], 18)}>
+                        <tr className="table-row"{...row.getRowProps()} onClick={() => mapInstance.setView([row.original.latitude, row.original.longitude], 18)}>
                             {row.cells.map(cell => {
                                 return (
-                                    <td{...cell.getCellProps()}>
+                                    <td {...cell.getCellProps()}>
                                         {cell.render('Cell')}
                                     </td>
                                 )
