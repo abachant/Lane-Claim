@@ -50,26 +50,36 @@ function ReportTable(props) {
     
     // Convert timestamp from exif data to a more readable formatted Date object
     function formatDateTime(datetime){
-        // Trim non-numeric characters from timestamp
-        let date = datetime.split(' ')[0];
-        let time = datetime.split(' ')[1];
-        date = date.split(':');
-        time = time.split(':');
 
-        // Create Date object from input
-        let formattedDateTime = new Date(date[0], date[1], date[2], time[0], time[1], time[2])
-        const datetimeString = formattedDateTime.toLocaleString()
-        return datetimeString
+        // Make sure to only reformat if datetime is in timestamp format eg. "2015:07:15 21:02:16"
+        if(datetime[4] === ":") {
+            // Trim non-numeric characters from timestamp
+            let date = datetime.split(' ')[0];
+            let time = datetime.split(' ')[1];
+            date = date.split(':');
+            time = time.split(':');
+
+            // Create Date object from input
+            let formattedDateTime = new Date(date[0], date[1], date[2], time[0], time[1], time[2])
+
+            // Set parameters so toLocaleString will return a LocaleString without any seconds
+            const options = {year:'numeric', month:'numeric', day:'numeric', hour: '2-digit', minute:'2-digit', }
+
+            const datetimeString = formattedDateTime.toLocaleString([], options)
+            return datetimeString
+        }else{
+            return datetime
+        }
     }
     return (
         <div id="report-table">
             <table className="table" {...getTableProps()}>
                 <thead>
                     {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()}>
+                        <tr key={headerGroup}{...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map(column => (
                                 // Add the sorting props to control sorting
-                            <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                            <th key={column}{...column.getHeaderProps(column.getSortByToggleProps())}>
                                 {column.render('Header')}
                                 {/* Add a sort direction indicator */}
                                 <span>
@@ -87,12 +97,15 @@ function ReportTable(props) {
 
                 <tbody {...getTableBodyProps()}>
                 {rows.map(row => {
+                    // Convert dateTimes from timestamps to localeStrings before rendering
+                    row.values.dateTime = formatDateTime(row.values.dateTime)
+                    
                     prepareRow(row)
                     return (
-                        <tr className="table-row"{...row.getRowProps()} onClick={() => mapInstance.setView([row.original.latitude, row.original.longitude], 18)}>
+                        <tr key={row} className="table-row"{...row.getRowProps()} onClick={() => mapInstance.setView([row.original.latitude, row.original.longitude], 18)}>
                             {row.cells.map(cell => {
                                 return (
-                                    <td {...cell.getCellProps()}>
+                                    <td key={cell}{...cell.getCellProps()}>
                                         {cell.render('Cell')}
                                     </td>
                                 )
@@ -102,29 +115,6 @@ function ReportTable(props) {
                 })}
                 </tbody>
             </table>
-
-
-            {/* <table {...getTableProps()} className="table">
-                <thead>
-                    <tr>
-                        <th>Datetime</th>
-                        <th>Location</th>
-                        <th>License Plate</th>
-                        <th>License State</th>
-                    </tr>
-                </thead>
-                <tbody> */}
-                    {/* Create table entry for each incident in State */}
-                    {/* {markerList.map(item => (
-                        <tr key={item.name}>
-                            <td>{formatDateTime(item.dateTime)}</td>
-                            <td>{item.location}</td>
-                            <td>{item.licensePlate}</td>
-                            <td>{item.state}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>    */}
         </div>
         
     );
