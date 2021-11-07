@@ -1,0 +1,99 @@
+/* elements */
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* classes */
+
+.App {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.leaflet-popup-content{
+  width: min-content !important;
+}
+
+.map {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.marker-popup {
+  min-width: 375px;
+}
+
+.marker-popup-photo {
+  height: auto;
+  width: 100%;
+}
+
+.navbar {
+  flex: none;
+}
+
+.popup-table {
+  margin-bottom: 0;
+}
+
+.table-row {
+  cursor: pointer;
+}
+
+.table-row:hover{
+  text-decoration: underline;
+  background-color: lightblue;
+}
+
+/* ids */
+#confirmation-map {
+  height: 400px;
+  width: 100%;
+  z-index: -1;
+}
+
+#map-container {
+  flex: 1 1 auto;
+  padding: 0;
+  height: 100%;
+}
+
+#report-table{
+  background-color: white;
+  height: 100%;
+  z-index: 1000;
+}
+
+#report-table-container{
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row-reverse;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+#report-table-button{
+  padding:0;
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  z-index: 1000;
+  margin: 7px;
+  flex-shrink: 0;
+}

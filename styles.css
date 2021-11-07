@@ -33,6 +33,16 @@
   padding: 10px;
   height: calc(100vh - 56px);
   width: auto;
+  overflow: scroll;
+}
+
+.container-fluid {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
 }
 
 /*# sourceMappingURL=styles.css.map */
